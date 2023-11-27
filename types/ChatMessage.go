@@ -6,9 +6,8 @@ type UserMeta struct {
 }
 
 type User struct {
-	Nickname string   `json:"nickname"`
-	Login    string   `json:"login"`
-	Meta     UserMeta `json:"meta"`
+	Name string   `json:"nickname"`
+	Meta UserMeta `json:"meta"`
 }
 
 type ChatMessage struct {

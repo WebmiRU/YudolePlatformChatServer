@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"slices"
 )
@@ -12,6 +13,7 @@ func main() {
 }
 
 func broadcast(message json.RawMessage, event string) {
+	fmt.Println("BORADCAST:", message)
 	tcpSubscribersMutex.Lock()
 	for socket, events := range tcpSubscribers {
 		if slices.Index(events, event) >= 0 {

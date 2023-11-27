@@ -14,7 +14,7 @@ function connect() {
 
         messageSend({
             'class': 'terran',
-            'nickname': msg.user?.nickname ?? '[NONE]',
+            'name': msg.user?.name ?? '[NONE]',
             'html': msg.html ?? '[NONE]',
         })
     };
@@ -39,11 +39,11 @@ function messageSend(v) {
 }
 
 function testMsg() {
-    let msg = JSON.parse('{"id":"","type":"chat/message","service":"goodgame","html":"432432432","text":"432432432","user":{"id":"","nickname":"E.Wolf","login":"E.Wolf","meta":{"badges":null}}}');
+    let msg = JSON.parse('{"id":"","type":"chat/message","service":"goodgame","html":"432432432","text":"432432432","user":{"id":"","name":"E.Wolf","login":"E.Wolf","meta":{"badges":null}}}');
 
     messageSend({
         'class': 'terran',
-        'nickname': msg.user.nickname,
+        'name': msg.user.name,
         'html': msg.html,
     })
 }

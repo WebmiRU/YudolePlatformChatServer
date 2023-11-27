@@ -2,25 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"slices"
-	"time"
 )
 
 func main() {
-	go func() {
-		for {
-			fmt.Printf("%v\n", wsSubscribers)
-			//for _, v := range wsSubscribers {
-			//	fmt.Println(v)
-			fmt.Println("----------")
-			time.Sleep(time.Second * 10)
-			//}
-		}
-	}()
-
 	go tcpServerStart()
 	wsServerStart()
 }

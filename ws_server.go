@@ -33,7 +33,9 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		var message json.RawMessage
-		err := conn.ReadJSON(&message)
+		if err := conn.ReadJSON(&message); err != nil {
+			break
+		}
 
 		fmt.Println(message)
 
@@ -87,11 +89,11 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 			broadcast(message, base.Type)
 			break
 		}
-
-		wsSubscribersMutex.Lock()
-		delete(wsSubscribers, conn)
-		wsSubscribersMutex.Unlock()
 	}
+
+	wsSubscribersMutex.Lock()
+	delete(wsSubscribers, conn)
+	wsSubscribersMutex.Unlock()
 }
 
 func wsServerStart() {

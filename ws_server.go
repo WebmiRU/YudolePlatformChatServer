@@ -22,7 +22,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func accept(w http.ResponseWriter, r *http.Request) {
+func wsAccept(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Websocket upgrading error:", err)
@@ -84,7 +84,7 @@ func accept(w http.ResponseWriter, r *http.Request) {
 			break
 
 		default:
-			log.Println("DEFAULT")
+			broadcast(message, base.Type)
 			break
 		}
 
@@ -93,6 +93,6 @@ func accept(w http.ResponseWriter, r *http.Request) {
 }
 
 func wsServerStart() {
-	http.HandleFunc("/chat", accept)
+	http.HandleFunc("/chat", wsAccept)
 	log.Fatal(http.ListenAndServe("0.0.0.0:5800", nil))
 }

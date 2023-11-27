@@ -17,7 +17,7 @@ var tcpSubscribers = make(map[net.Conn][]string)
 func tcpServerStart() {
 	server, err := net.Listen("tcp", fmt.Sprintf("%s:%d", "0.0.0.0", 5801))
 	if err != nil {
-		fmt.Println("Error listening:", err)
+		fmt.Println("Listening error:", err)
 		os.Exit(1)
 	}
 

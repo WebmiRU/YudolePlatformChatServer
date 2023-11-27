@@ -3,7 +3,6 @@ package main
 import (
 	"YudolePlatofrmChatServer/types"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -36,8 +35,6 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 		if err := conn.ReadJSON(&message); err != nil {
 			break
 		}
-
-		fmt.Println(message)
 
 		if err != nil {
 			log.Println("JSON message decode error:", err)

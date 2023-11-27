@@ -88,7 +88,7 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		log.Printf("recv: %s", message)
+		//log.Printf("recv: %s", message)
 	}
 }
 

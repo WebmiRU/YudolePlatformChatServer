@@ -88,7 +88,9 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		//log.Printf("recv: %s", message)
+		wsSubscribersMutex.Lock()
+		delete(wsSubscribers, conn)
+		wsSubscribersMutex.Unlock()
 	}
 }
 

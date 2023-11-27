@@ -39,7 +39,9 @@ func tcpAccept(conn net.Conn) {
 
 	for {
 		var message json.RawMessage
-		decoder.Decode(&message)
+		if err := decoder.Decode(&message); err != nil {
+			break
+		}
 
 		var base types.Base
 		json.Unmarshal(message, &base)
@@ -83,7 +85,9 @@ func tcpAccept(conn net.Conn) {
 			broadcast(message, base.Type)
 			break
 		}
-
-		fmt.Println(tcpSubscribers[conn])
 	}
+
+	tcpSubscribersMutex.Lock()
+	delete(tcpSubscribers, conn)
+	tcpSubscribersMutex.Unlock()
 }

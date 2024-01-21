@@ -37,7 +37,8 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		var message json.RawMessage
-		if err := conn.ReadJSON(message); err != nil {
+		if err := conn.ReadJSON(&message); err != nil {
+			log.Println(err)
 			break
 		}
 	}

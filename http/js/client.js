@@ -2,13 +2,14 @@ let main = document.querySelector('main')
 let message = document.querySelector('#message').innerHTML
 
 function connect() {
-    var ws = new WebSocket('ws://127.0.0.1:5800/chat');
+    let ws = new WebSocket('ws://127.0.0.1:5800/chat');
     ws.onopen = function () {
-        ws.send(JSON.stringify({"type": "subscribe", "events": ["chat/message"]}));
+        // ws.send(JSON.stringify({"type": "subscribe", "events": ["chat/message"]}));
         console.log('OPEN')
     };
 
     ws.onmessage = function (e) {
+        console.log('MESSAGE')
         let msg = JSON.parse(e.data);
         let _class;
 
@@ -29,16 +30,16 @@ function connect() {
 
         messageSend({
             'class': _class,
-            'name': msg.user?.name ?? '[NONE]',
+            'name': msg.user?.nickname ?? '[NONE]',
             'html': msg.html ?? '[NONE]',
         })
     };
 
     ws.onclose = function (e) {
-        console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+        console.log('Socket is closed. Reconnect will be attempted in 5 second.', e.reason);
         setTimeout(function () {
             connect();
-        }, 1000);
+        }, 5000);
     };
 
     ws.onerror = function (err) {

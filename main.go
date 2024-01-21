@@ -15,6 +15,7 @@ func main() {
 	//go test2()
 	//go test3()
 	//go test4()
+	//go test5()
 
 	go wsServerStart()
 	go twitch.Start(Out)
@@ -82,6 +83,13 @@ func test4() {
 	for {
 		var msg = <-Out
 		fmt.Println(msg)
+	}
+}
+
+func test5() {
+	for {
+		fmt.Printf("CLIENTS Count: %d\n", len(obj.Clients))
+		time.Sleep(1 * time.Second)
 	}
 }
 

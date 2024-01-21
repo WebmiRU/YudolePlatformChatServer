@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-var clientMutex sync.Mutex
+var ClientMutex sync.Mutex
 var Clients []*Client
 
 type Client struct {
@@ -15,14 +15,14 @@ type Client struct {
 }
 
 func ClientAppend(client *Client) {
-	clientMutex.Lock()
+	ClientMutex.Lock()
 	Clients = append(Clients, client)
-	clientMutex.Unlock()
+	ClientMutex.Unlock()
 }
 
 func ClientRemove(client *Client) {
-	clientMutex.Lock()
+	ClientMutex.Lock()
 	var idx = slices.Index(Clients, client)
 	Clients = slices.Delete(Clients, idx, idx+1)
-	clientMutex.Unlock()
+	ClientMutex.Unlock()
 }

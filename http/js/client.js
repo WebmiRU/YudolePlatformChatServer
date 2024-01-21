@@ -10,10 +10,25 @@ function connect() {
 
     ws.onmessage = function (e) {
         let msg = JSON.parse(e.data);
+        let _class;
+
+        switch (msg.service.toLowerCase()) {
+            case 'twitch':
+                _class = 'zerg'
+                break
+
+            case 'goodgame':
+                _class = 'terran'
+
+            case 'trovo':
+                _class = 'protoss'
+                break
+        }
+
         console.log(e.data)
 
         messageSend({
-            'class': 'terran',
+            'class': _class,
             'name': msg.user?.name ?? '[NONE]',
             'html': msg.html ?? '[NONE]',
         })
@@ -39,7 +54,7 @@ function messageSend(v) {
 }
 
 function testMsg() {
-    let msg = JSON.parse('{"id":"","type":"chat/message","service":"goodgame","html":"432432432","text":"432432432","user":{"id":"","name":"E.Wolf","login":"E.Wolf","meta":{"badges":null}}}');
+    let msg = JSON.parse('{"id":"","type":"chat/message","service":"twitch","html":"432432432","text":"432432432","user":{"id":"","name":"E.Wolf","login":"E.Wolf","meta":{"badges":null}}}');
 
     messageSend({
         'class': 'terran',
@@ -48,7 +63,6 @@ function testMsg() {
     })
 }
 
-testMsg();
 testMsg();
 
 setInterval(() => {

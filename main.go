@@ -2,7 +2,6 @@ package main
 
 import (
 	"YudolePlatofrmChatServer/obj"
-	"YudolePlatofrmChatServer/twitch"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -18,7 +17,7 @@ func main() {
 	//go test5()
 
 	go wsServerStart()
-	go twitch.Start(Out)
+	//go twitch.Start(Out)
 
 	broadcast()
 	//select {}

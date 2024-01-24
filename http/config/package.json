@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "bulma": "^0.9.4",
+    "sass": "^1.70.0",
     "vue": "^3.3.11"
   },
   "devDependencies": {

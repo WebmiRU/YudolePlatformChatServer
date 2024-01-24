@@ -47,8 +47,8 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 }
 
 func wsServerStart() {
-	fs := http.FileServer(http.Dir("./http/system"))
-	http.Handle("/", http.StripPrefix("/", fs))
+	config := http.FileServer(http.Dir("./http/config"))
+	http.Handle("/config", http.StripPrefix("/", config))
 	http.HandleFunc("/chat", wsAccept)
 	log.Fatal(http.ListenAndServe("0.0.0.0:5800", nil))
 }

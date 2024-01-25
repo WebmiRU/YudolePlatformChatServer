@@ -1,1 +1,1 @@
-{"services":{"goodgame":{"login":"gg-login111","password":"gg-password","channels":[321,2,3]},"trovo":{"login":"","password":"","channels":null},"twitch":{"login":"","password":"","channels":null},"youtube":{"login":"","password":"","channels":null}}}
+{"services":{"goodgame":{"login":"gg-login321","password":"gg-password","channels":[3]},"trovo":{"login":"","password":"","channels":null},"twitch":{"login":"","password":"","channels":null},"youtube":{"login":"","password":"","channels":null}}}

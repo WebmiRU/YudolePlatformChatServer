@@ -46,9 +46,48 @@ func wsAccept(w http.ResponseWriter, r *http.Request) {
 	obj.ClientRemove(&client)
 }
 
+func configResponse(w http.ResponseWriter, r *http.Request) {
+	cfg, _ := json.Marshal(config)
+
+	log.Println(r.Method)
+	switch r.Method {
+	case "GET":
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(cfg)
+		break
+
+	case "POST":
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+
+		jd := json.NewDecoder(r.Body)
+		jd.DisallowUnknownFields()
+		jd.Decode(&config)
+
+		configSave()
+		break
+
+	case "OPTIONS":
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(200)
+
+	default:
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.WriteHeader(404)
+	}
+
+	return
+}
+
 func wsServerStart() {
-	config := http.FileServer(http.Dir("./http/config"))
-	http.Handle("/config", http.StripPrefix("/", config))
+	http.HandleFunc("/config", configResponse)
 	http.HandleFunc("/chat", wsAccept)
 	log.Fatal(http.ListenAndServe("0.0.0.0:5800", nil))
 }

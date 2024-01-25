@@ -1,4 +1,38 @@
-<script setup>
+<script>
+import axios from "axios";
+import {config} from "./store/config.js";
+
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+    configGet() {
+      axios.get('http://127.0.0.1:5800/config', {}).then((r) => {
+        Object.assign(config, r.data)
+      }).catch((e) => {
+        // @TODO Error
+        console.log(e)
+      })
+    },
+    configPost() {
+      axios.post('http://127.0.0.1:5800/config', config)
+          .then((r) => {
+            console.log(r)
+          })
+          .catch((e) => {
+            // @TODO Error
+            console.log(e)
+          })
+    },
+  },
+  beforeMount() {
+    this.configGet()
+    console.log('STORE', config)
+  }
+}
 </script>
 
 <template>
@@ -28,6 +62,7 @@
 
   </aside>
   <main class="column is-8">
+    <button @click="configPost" class="button is-success">Сохранить</button>
     <router-view></router-view>
   </main>
   </div>

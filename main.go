@@ -4,20 +4,46 @@ import (
 	"YudolePlatofrmChatServer/obj"
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 )
 
-var Out = make(chan any, 9999)
+var config obj.Config
+var out = make(chan any, 9999)
+
+func configLoad() {
+	file, err := os.ReadFile("config.json")
+
+	if err != nil {
+
+	}
+
+	if err := json.Unmarshal(file, &config); err != nil {
+		return
+	}
+
+}
+
+func configSave() {
+	cfg, _ := json.Marshal(config)
+	if err := os.WriteFile("config.json", cfg, 0644); err != nil {
+		// @TODO Error
+		return
+	}
+}
 
 func main() {
+	configLoad()
+
 	//go test1()
 	//go test2()
 	//go test3()
 	//go test4()
 	//go test5()
+	//go test6()
 
 	go wsServerStart()
-	//go twitch.Start(Out)
+	//go twitch.Start(out)
 
 	broadcast()
 	//select {}
@@ -65,7 +91,7 @@ func test2() {
 			User:    obj.User{},
 		}
 		//m, _ := json.Marshal(s)
-		Out <- s
+		out <- s
 
 		time.Sleep(2 * time.Second)
 	}
@@ -73,14 +99,14 @@ func test2() {
 
 func test3() {
 	for {
-		fmt.Println(len(Out))
+		fmt.Println(len(out))
 		time.Sleep(1 * time.Second)
 	}
 }
 
 func test4() {
 	for {
-		var msg = <-Out
+		var msg = <-out
 		fmt.Println(msg)
 	}
 }
@@ -91,10 +117,16 @@ func test5() {
 		time.Sleep(1 * time.Second)
 	}
 }
+func test6() {
+	for {
+		time.Sleep(time.Second * 3)
+		fmt.Println(config)
+	}
+}
 
 func broadcast() {
 	for {
-		m := <-Out
+		m := <-out
 		message, _ := json.Marshal(m)
 		fmt.Println("OUT:", string(message))
 

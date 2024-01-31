@@ -7,21 +7,21 @@ type GoodGame struct {
 }
 
 type Trovo struct {
-	Login    string  `json:"login"`
-	Password string  `json:"password"`
-	Channels []int64 `json:"channels"`
+	Login    string   `json:"login"`
+	Password string   `json:"password"`
+	Channels []string `json:"channels"`
 }
 
 type Twitch struct {
-	Login    string  `json:"login"`
-	Password string  `json:"password"`
-	Channels []int64 `json:"channels"`
+	Login    string   `json:"login"`
+	Password string   `json:"password"`
+	Channels []string `json:"channels"`
 }
 
 type YouTube struct {
-	Login    string  `json:"login"`
-	Password string  `json:"password"`
-	Channels []int64 `json:"channels"`
+	Login    string   `json:"login"`
+	Password string   `json:"password"`
+	Channels []string `json:"channels"`
 }
 
 type Services struct {

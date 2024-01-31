@@ -4,6 +4,7 @@ import {config} from "../store/config.js";
 
 <template>
   <h1 class="title is-1">GoodGame</h1>
+
   <div class="field">
     <label class="label">Имя пользователя</label>
     <div class="control">

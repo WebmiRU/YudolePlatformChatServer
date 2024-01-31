@@ -79,7 +79,6 @@ func test1() {
 		time.Sleep(1 * time.Second)
 	}
 }
-
 func test2() {
 	for {
 		s := obj.ChatMessage{
@@ -96,21 +95,18 @@ func test2() {
 		time.Sleep(2 * time.Second)
 	}
 }
-
 func test3() {
 	for {
 		fmt.Println(len(out))
 		time.Sleep(1 * time.Second)
 	}
 }
-
 func test4() {
 	for {
 		var msg = <-out
 		fmt.Println(msg)
 	}
 }
-
 func test5() {
 	for {
 		fmt.Printf("CLIENTS Count: %d\n", len(obj.Clients))

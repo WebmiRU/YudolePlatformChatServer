@@ -1,4 +1,4 @@
-package twitch
+package twitch_client
 
 func Start(out chan any) {
 	go IrcPing()

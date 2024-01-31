@@ -56,38 +56,26 @@ export default {
             Home
           </a>
 
-          <a class="navbar-item">
-            Documentation
-          </a>
-
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              More
+              Сервисы
             </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item">
-                About
-              </a>
-              <a class="navbar-item">
-                Jobs
-              </a>
-              <a class="navbar-item">
-                Contact
-              </a>
-              <hr class="navbar-divider">
-              <a class="navbar-item">
-                Report an issue
-              </a>
+              <router-link :to="{name: 'chats.goodgame'}" active-class="is-active" class="navbar-item">GoodGame</router-link>
+              <router-link :to="{name: 'chats.trovo'}" active-class="is-active" class="navbar-item">Trovo</router-link>
+              <router-link :to="{name: 'chats.twitch'}" active-class="is-active" class="navbar-item">Twitch</router-link>
+              <router-link :to="{name: 'chats.youtube'}" active-class="is-active" class="navbar-item">YouTube</router-link>
+<!--              <hr class="navbar-divider">-->
             </div>
           </div>
+
+          <a class="navbar-item">
+            Documentation
+          </a>
         </div>
 
         <div class="navbar-end">
-<!--          <div class="navbar-item">-->
-<!--            <label class="checkbox">-->
-<!--              <input type="checkbox"> Режим эксперта</label>-->
-<!--          </div>-->
           <div class="navbar-item">
             <div class="buttons">
               <button @click="configPost" class="button is-success">Сохранить</button>
@@ -98,29 +86,29 @@ export default {
     </nav>
   </header>
 
-  <div class="columns">
-  <aside class="menu column is-4" style="padding: 30px">
-    <p class="menu-label">
-      Чаты
-    </p>
-    <ul class="menu-list">
-<!--      <a class="is-active">GoodGame</a>-->
-      <li><router-link :to="{name: 'chats.goodgame'}" active-class="is-active">GoodGame</router-link></li>
-      <li><router-link :to="{name: 'chats.trovo'}" active-class="is-active">Trovo</router-link></li>
-      <li><router-link :to="{name: 'chats.twitch'}" active-class="is-active">Twitch</router-link></li>
-      <li><router-link :to="{name: 'chats.youtube'}" active-class="is-active">YouTube</router-link></li>
-    </ul>
-    <p class="menu-label">
-      Прочие параметры
-    </p>
-    <ul class="menu-list">
-      <li><a>Team Settings</a></li>
-      <li><a>Manage Your Team</a></li>
-    </ul>
+<!--  <div class="columns">-->
+<!--  <aside class="menu column is-4" style="padding: 30px">-->
+<!--    <p class="menu-label">-->
+<!--      Чаты-->
+<!--    </p>-->
+<!--    <ul class="menu-list">-->
+<!--&lt;!&ndash;      <a class="is-active">GoodGame</a>&ndash;&gt;-->
+<!--      <li><router-link :to="{name: 'chats.goodgame'}" active-class="is-active">GoodGame</router-link></li>-->
+<!--      <li><router-link :to="{name: 'chats.trovo'}" active-class="is-active">Trovo</router-link></li>-->
+<!--      <li><router-link :to="{name: 'chats.twitch'}" active-class="is-active">Twitch</router-link></li>-->
+<!--      <li><router-link :to="{name: 'chats.youtube'}" active-class="is-active">YouTube</router-link></li>-->
+<!--    </ul>-->
+<!--    <p class="menu-label">-->
+<!--      Прочие параметры-->
+<!--    </p>-->
+<!--    <ul class="menu-list">-->
+<!--      <li><a>Team Settings</a></li>-->
+<!--      <li><a>Manage Your Team</a></li>-->
+<!--    </ul>-->
 
-  </aside>
-  <main class="column is-8" style="padding: 30px">
+<!--  </aside>-->
+  <main style="padding: 30px">
     <router-view></router-view>
   </main>
-  </div>
+<!--  </div>-->
 </template>

@@ -1,4 +1,4 @@
-package twitch
+package twitch_client
 
 type IRCMessage struct {
 	Login   string

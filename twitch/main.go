@@ -1,8 +1,10 @@
-package twitch_client
+package twitch
 
-func Start(out chan any) {
+import "YudolePlatofrmChatServer/obj"
+
+func Start(config obj.Config, out chan any) {
 	go IrcPing()
-	go Connect(out)
+	go Connect(config, out)
 	//fmt.Println("CONNECTED!")
 
 	//for {

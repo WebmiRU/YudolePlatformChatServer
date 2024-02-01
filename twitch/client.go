@@ -1,4 +1,4 @@
-package twitch_client
+package twitch
 
 import (
 	"YudolePlatofrmChatServer/obj"
@@ -18,6 +18,7 @@ const (
 	SocketReconnect = 10
 )
 
+// var config obj.Config
 var re = regexp.MustCompile(`^(?:@([^\r\n ]*) +|())(?::([^\r\n ]+) +|())([^\r\n ]+)(?: +([^:\r\n ]+[^\r\n ]*(?: +[^:\r\n ]+[^\r\n ]*)*)|())?(?: +:([^\r\n]*)| +())?[\r\n]*$`)
 var socket net.Conn
 var lastDataReceived = time.Now()
@@ -112,7 +113,7 @@ func IrcPing() {
 	}
 }
 
-func Connect(out chan any) {
+func Connect(config obj.Config, out chan any) {
 	var err error
 	if socket, err = net.Dial("tcp", fmt.Sprintf("%s:%d", "irc.chat.twitch.tv", 6667)); err != nil {
 		log.Println("Service TWITCH connection error: ", err)
@@ -123,12 +124,13 @@ func Connect(out chan any) {
 	socket.SetReadDeadline(time.Now().Add(time.Second * SocketWait))
 
 	fmt.Fprintln(socket, "CAP REQ :twitch.tv/commands twitch.tv/tags twitch.tv/membership")
-	fmt.Fprintln(socket, fmt.Sprintf("PASS %s", "oauth:gex3upkd5yplcnpe0o0s0msls6781j"))
-	fmt.Fprintln(socket, fmt.Sprintf("NICK %s", "YudoleBot"))
-	fmt.Fprintln(socket, fmt.Sprintf("JOIN %s", "#ewolf34"))
-	fmt.Fprintln(socket, fmt.Sprintf("JOIN %s", "#digitalcorp"))
-	fmt.Fprintln(socket, fmt.Sprintf("JOIN %s", "#trossovich"))
-	fmt.Fprintln(socket, fmt.Sprintf("JOIN %s", "#m_on_t"))
+
+	fmt.Fprintln(socket, fmt.Sprintf("PASS %s", config.Services.Twitch.Password))
+	fmt.Fprintln(socket, fmt.Sprintf("NICK %s", config.Services.Twitch.Login))
+
+	for _, v := range config.Services.Twitch.Channels {
+		fmt.Fprintln(socket, fmt.Sprintf("JOIN #%s", v))
+	}
 
 	isIrcConnected = true
 
@@ -201,6 +203,6 @@ func Connect(out chan any) {
 	// TODO Reconnecting message send
 
 	isIrcConnected = false
-	defer Connect(out)
+	defer Connect(config, out)
 	defer socket.Close()
 }

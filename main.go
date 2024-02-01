@@ -43,7 +43,7 @@ func main() {
 	//go test6()
 
 	go wsServerStart()
-	//go twitch.Start(out)
+	go twitch.Start(config, out)
 
 	broadcast()
 	//select {}

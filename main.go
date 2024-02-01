@@ -1,6 +1,7 @@
 package main
 
 import (
+	"YudolePlatofrmChatServer/goodgame"
 	"YudolePlatofrmChatServer/obj"
 	"encoding/json"
 	"fmt"
@@ -43,7 +44,8 @@ func main() {
 	//go test6()
 
 	go wsServerStart()
-	go twitch.Start(config, out)
+	//go twitch.Start(config, out)
+	go goodgame.Start(config, out)
 
 	broadcast()
 	//select {}

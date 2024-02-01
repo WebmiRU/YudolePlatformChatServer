@@ -35,21 +35,17 @@ func loadSmiles() {
 			Static:   v.Images.Big,
 		}
 	}
-
-	log.Println("SLS1")
-
-	msg := processSmile("Hello :shoked: world")
-
-	log.Println("SLS2")
-
-	fmt.Println(msg)
-
-	log.Println("SLS3")
 }
 
 func processSmile(message string) string {
 	for k, v := range smiles {
-		message = strings.ReplaceAll(message, k, fmt.Sprintf("<img src='%s' alt='%s' />", v, k))
+		if strings.Contains(message, k) {
+			if len(v.Animated) > 0 {
+				message = strings.ReplaceAll(message, k, fmt.Sprintf("<img src='%s' alt='%s' />", v.Animated, k))
+			} else {
+				message = strings.ReplaceAll(message, k, fmt.Sprintf("<img src='%s' alt='%s' />", v.Static, k))
+			}
+		}
 	}
 
 	return message
@@ -114,7 +110,7 @@ func connect(config obj.Config, out chan any) {
 				Service: "goodgame",
 				Src:     message.Data.Text,
 				Text:    message.Data.Text,
-				Html:    message.Data.Text,
+				Html:    processSmile(message.Data.Text),
 				User: obj.User{
 					Name: message.Data.UserName,
 					Meta: obj.UserMeta{

@@ -7,7 +7,7 @@ pipeline {
             image 'node:20-alpine'
 //             args  '-v /tmp:/tmp'
 //             args '-v ./:/app'
-            args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:front/node_modules'
+//             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:front/node_modules'
         }
     }
 
@@ -21,6 +21,7 @@ pipeline {
 
         stage('Build front') {
             steps {
+                sh 'printenv'
                 dir('frontend') {
                     sh 'rm -f package-lock.json'
                     sh 'rm -fr dist'

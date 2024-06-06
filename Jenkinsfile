@@ -11,7 +11,7 @@ pipeline {
                     image 'golang:1.22-alpine'
                     reuseNode true
                     args '-v /var/lib/jenkins/gocache/:${WORKSPACE}/test01'
-                    args '-v /var/lib/jenkins/gocache/:/cache/go-mods'
+//                     args '-v /var/lib/jenkins/gocache/:/cache/go-mods'
                 }
             }
 

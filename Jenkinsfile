@@ -25,8 +25,8 @@ pipeline {
                 dir('frontend') {
                     sh 'rm -f package-lock.json'
 //                     sh 'rm -fr dist'
-                    sh 'npm install'
-                    sh 'npm run build'
+//                     sh 'npm install'
+                    sh 'npm run build || npm install && npm run build'
                     sh 'ls -al'
                     sh 'ls -al dist/assets'
                 }

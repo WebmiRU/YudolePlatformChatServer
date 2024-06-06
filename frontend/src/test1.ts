@@ -1,3 +1,2 @@
-function helloworld() {
-    alert("Hello World");
-}
+alert("Hello World");
+

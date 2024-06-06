@@ -2,14 +2,7 @@ pipeline {
     environment {
         HOME = '.'
     }
-    agent {
-        docker {
-            image 'node:20-alpine'
-//             args  '-v /tmp:/tmp'
-//             args '-v ./:/app'
-//             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:${WORKSPACE}/front/node_modules'
-        }
-    }
+
 
     stages {
 //         stage('Git') {
@@ -20,8 +13,18 @@ pipeline {
 //         }
 
         stage('Build front') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    reuseNode true
+        //             args  '-v /tmp:/tmp'
+        //             args '-v ./:/app'
+        //             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:${WORKSPACE}/front/node_modules'
+                }
+            }
+
             steps {
-                sh 'printenv'
+//                 sh 'printenv'
                 dir('frontend') {
                     sh 'rm -f package-lock.json'
 //                     sh 'rm -fr dist'

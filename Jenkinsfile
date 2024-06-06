@@ -16,7 +16,7 @@ pipeline {
             }
 
             steps {
-                sh 'echo "Cache test" > /cache/go-mod'
+//                 sh 'echo "Cache test" > /cache/go-mod'
                 sh 'echo "Cache test 01" > test01/test01.txt'
             }
         }

@@ -50,9 +50,11 @@ pipeline {
                     sh '''
                         for theme in ./*
                         do
-                            cd ${theme}
-                            rm -f package-lock.json
-                            npm run build || npm install && npm run build
+                            if [ -d ${theme} ]; then
+                                cd ${theme}
+                                rm -f package-lock.json
+                                npm run build || npm install && npm run build
+                            fi
                         done
                     '''
                 }

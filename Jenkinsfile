@@ -5,20 +5,19 @@ pipeline {
     }
 
     stages {
-    stage('Test Go-01') {
-     agent {
-        docker {
-            image 'node:20-alpine'
-            reuseNode true
-            args '-v ${WORKSPACE}/.cache:/cache/go-mod'
-        }
+        stage('Test Go-01') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    reuseNode true
+                    args '-v ${WORKSPACE}/.cache:/cache/go-mod'
+                }
+            }
 
-        steps {
-            sh 'echo "Cache test" > /cache/go-mod'
+            steps {
+                sh 'echo "Cache test" > /cache/go-mod'
+            }
         }
-    }
-
-    }
 //         stage('Git') {
 //             steps {
 //                 git branch: 'develop',

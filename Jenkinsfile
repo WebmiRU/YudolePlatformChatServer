@@ -11,12 +11,12 @@ pipeline {
                     image 'golang:1.22-alpine'
                     reuseNode true
                     args '-v /var/lib/jenkins/gocache/:${WORKSPACE}/test01'
-//                     args '-v /var/lib/jenkins/gocache/:/cache/go-mods'
+                    args '-v /var/lib/jenkins/gocache/:/cache/go-mods'
                 }
             }
 
             steps {
-//                 sh 'echo "Cache test" > /cache/go-mod'
+                sh 'echo "Cache test" > /cache/go-mods/test00.txt'
                 sh 'echo "Cache test 01" > test01/test01.txt'
             }
         }

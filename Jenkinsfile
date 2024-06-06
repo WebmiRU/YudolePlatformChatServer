@@ -18,6 +18,7 @@ pipeline {
             steps {
                 sh 'ls -al /cache/go-mods'
                 sh 'ls -al test01'
+                sh 'ls -al'
 //                 sh 'echo "Cache test" > /cache/go-mods/test00.txt'
 //                 sh 'echo "Cache test 01" > test01/test01.txt'
             }

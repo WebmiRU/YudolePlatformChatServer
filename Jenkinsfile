@@ -7,7 +7,7 @@ pipeline {
             image 'node:20-alpine'
 //             args  '-v /tmp:/tmp'
 //             args '-v ./:/app'
-//             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:front/node_modules'
+            args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:${WORKSPACE}/front/node_modules'
         }
     }
 

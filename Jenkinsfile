@@ -1,8 +1,8 @@
 pipeline {
+    agent none
     environment {
         HOME = '.'
     }
-
 
     stages {
 //         stage('Git') {

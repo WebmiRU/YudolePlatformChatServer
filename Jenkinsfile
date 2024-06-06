@@ -24,11 +24,11 @@ pipeline {
                 sh 'printenv'
                 dir('frontend') {
                     sh 'rm -f package-lock.json'
-                    sh 'rm -fr dist'
+//                     sh 'rm -fr dist'
                     sh 'npm install'
                     sh 'npm run build'
                     sh 'ls -al'
-                    sh 'ls -al dist'
+                    sh 'ls -al dist/assets'
                 }
             }
         }

@@ -35,6 +35,28 @@ pipeline {
                 }
             }
         }
+
+        stage('Build themes') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    reuseNode true
+                }
+            }
+
+            steps {
+//                 sh 'printenv'
+                dir('themes') {
+                    sh '''
+                        for theme in ./*
+                            cd ${theme}
+                            rm -f package-lock.json
+                            npm run build || npm install && npm run build
+                        done
+                    '''
+                }
+            }
+        }
     }
 //     post {
 //         always {

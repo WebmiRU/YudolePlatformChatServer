@@ -8,15 +8,16 @@ pipeline {
         stage('Test Go-01') {
             agent {
                 docker {
-                    image 'node:20-alpine'
+                    image 'golang:1.22-alpine'
                     reuseNode true
-//                     args '-v ${WORKSPACE}/.cache:/cache/go-mod'
-                    args '-v /var/lib/jenkins/gocache/:/cache'
+                    args '-v /var/lib/jenkins/gocache/:${WORKSPACE}/test01'
+                    args '-v /var/lib/jenkins/gocache/:/cache/go-mods'
                 }
             }
 
             steps {
                 sh 'echo "Cache test" > /cache/go-mod'
+                sh 'echo "Cache test 01" > test01/test01.txt'
             }
         }
 //         stage('Git') {

@@ -1,0 +1,45 @@
+version: '3'
+
+#vars:
+#  BUILD_DIR: ../yudole_build
+
+includes:
+  tests:
+    taskfile: ./modules/twitch_client/Taskfile.yml
+    dir: ./modules/twitch_client/
+    aliases: [build_module_twitch_client]
+
+tasks:
+  default:
+    deps:
+        - zip
+
+  zip:
+    dir: ../yudole_build
+    deps:
+      - build_frontend
+      - build_server
+      - build_module_twitch_client
+    cmds:
+      - zip -9 build.zip ./*
+
+
+  build_frontend:
+    vars:
+      CID:
+        sh: docker create build_frontend
+    cmds:
+      - docker build -f ./.build/frontend.dockerfile . -t build_frontend
+      - docker cp {{.CID}}:/app/dist/. ./http/
+      - docker cp {{.CID}}:/app/dist/. $YUDOLE_CHAT_BUILD_DIR/http
+      - docker rm -v {{.CID}}
+
+  build_server:
+    vars:
+      CID:
+        sh: docker create build_server
+    cmds:
+      - docker build -f ./.build/server.dockerfile . -t build_server
+      - docker cp {{.CID}}:/app/chatserver.exe  $YUDOLE_CHAT_BUILD_DIR/chatserver.exe
+      - docker cp {{.CID}}:/app/config.json  $YUDOLE_CHAT_BUILD_DIR/config.json
+      - docker rm -v {{.CID}}

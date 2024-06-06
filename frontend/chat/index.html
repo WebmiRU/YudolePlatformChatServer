@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat index</title>
+    <link href="/chat/themes/system/theme.sass" rel="stylesheet" type="text/css"/>
+    <template id="template-message">
+        <div class="message">
+            <div class="header">{{ user.nick }}</div>
+            <div class="content">{{html}}</div>
+        </div>
+    </template>
+</head>
+<body>
+<h1>Chat index page</h1>
+<div id="messages" class="messages" style="border: 3px dotted darkred"></div>
+<script src="/chat/js/client.js"></script>
+</body>
+</html>

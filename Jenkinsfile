@@ -49,6 +49,7 @@ pipeline {
                 dir('themes') {
                     sh '''
                         for theme in ./*
+                        do
                             cd ${theme}
                             rm -f package-lock.json
                             npm run build || npm install && npm run build

@@ -77,8 +77,8 @@ pipeline {
             }
 
             steps {
-                sh 'mkdir ${WORKSPACE}/.cache/go-build'
-                sh 'mkdir ${WORKSPACE}/.cache/go-mod'
+                sh 'mkdir -p ${WORKSPACE}/.cache/go-build'
+                sh 'mkdir -p ${WORKSPACE}/.cache/go-mod'
                 sh 'go build -buildvcs=false -o chatserver.exe'
                 sh 'ls -al'
             }

@@ -85,7 +85,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'themes/**.dist/**', fingerprint: true
+            archiveArtifacts artifacts: 'themes/**/dist/**', fingerprint: true
             archiveArtifacts artifacts: 'chatserver.exe', fingerprint: true
             archiveArtifacts artifacts: 'config.json', fingerprint: true
             archiveArtifacts artifacts: 'frontend/dist/**', fingerprint: true

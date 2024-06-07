@@ -72,13 +72,12 @@ pipeline {
                 docker {
                     image 'golang:1.22-alpine'
                     reuseNode true
-                    args '-v /var/lib/jenkins/go-cache:/cache'
+//                     args '-v /var/lib/jenkins/go-cache:/cache'
+                    args '-v "${WORKSPACE}/.cache:/cache"'
                 }
             }
 
             steps {
-//                 sh 'mkdir -p ${WORKSPACE}/.cache/go-build'
-//                 sh 'mkdir -p ${WORKSPACE}/.cache/go-mods'
                 sh 'go build -buildvcs=false -o chatserver.exe'
                 sh 'ls -al'
             }

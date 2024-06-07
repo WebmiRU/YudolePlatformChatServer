@@ -75,7 +75,7 @@ pipeline {
                 environment {
                     GOOS = windows
                     GOARCH = amd64
-                    GOMODCACHE = $WORKSPACE/.cache/mods
+                    GOMODCACHE = "${WORKSPACE}/.cache/mods"
                 }
                 sh 'go build -buildvcs=false -o chatserver.exe'
                 sh 'ls -al'

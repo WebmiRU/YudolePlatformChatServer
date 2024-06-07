@@ -72,20 +72,22 @@ pipeline {
                 docker {
                     image 'golang:1.22-alpine'
                     reuseNode true
-//                     args '-v /var/lib/jenkins/go-cache:/cache'
-                    args '-v "${WORKSPACE}/.cache:/cache"'
+                    args '-v /var/lib/jenkins/go-cache:/cache'
+//                     args '-v "${WORKSPACE}/.cache:/cache"'
                 }
             }
 
             steps {
                 sh 'go build -buildvcs=false -o chatserver.exe'
-                sh 'ls -al'
             }
         }
     }
-//     post {
-//         always {
-//             archiveArtifacts artifacts: 'theme1/dist/**', fingerprint: true
-//         }
-//     }
+    post {
+        always {
+            archiveArtifacts artifacts: 'themes/dist/**', fingerprint: true
+            archiveArtifacts artifacts: 'chatserver.exe', fingerprint: true
+            archiveArtifacts artifacts: 'config.json', fingerprint: true
+            archiveArtifacts artifacts: 'frontend/dist/**', fingerprint: true
+        }
+    }
 }

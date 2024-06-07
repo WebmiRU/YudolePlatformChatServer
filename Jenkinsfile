@@ -1,27 +1,11 @@
 pipeline {
     agent none
+
     environment {
         HOME = '.'
     }
 
     stages {
-        stage('Test Go-01') {
-            agent {
-                docker {
-                    image 'golang:1.22-alpine'
-                    reuseNode true
-                    args '-v /var/lib/jenkins/gocache/:/cache/go-mods -v /var/lib/jenkins/gocache/:${WORKSPACE}/test01'
-                }
-            }
-
-            steps {
-//                 sh 'ls -al /cache/go-mods'
-                sh 'ls -al test01'
-                sh 'ls -al'
-                sh 'echo "Cache test" > /cache/go-mods/test00.txt'
-                sh 'echo "Cache test 01" > test01/test01.txt'
-            }
-        }
 //         stage('Git') {
 //             steps {
 //                 git branch: 'develop',
@@ -77,6 +61,26 @@ pipeline {
 //                 }
 //             }
 //         }
+
+        stage('Build Win64/exe') {
+            agent {
+                docker {
+                    image 'golang:1.22-alpine'
+                    reuseNode true
+                    args '-v :${WORKSPACE}/.cache/mods:${WORKSPACE}/.cache/mods'
+                }
+            }
+
+            steps {
+                environment {
+                    GOOS = windows
+                    GOARCH = amd64
+                    GOMODCACHE = {WORKSPACE}/.cache/mods
+                }
+                sh 'go build -buildvcs=false -o chatserver.exe'
+                sh 'ls -al'
+            }
+        }
     }
 //     post {
 //         always {

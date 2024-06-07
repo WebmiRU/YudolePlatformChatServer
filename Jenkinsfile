@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         HOME = '.'
@@ -82,6 +82,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             archiveArtifacts artifacts: 'themes/dist/**', fingerprint: true

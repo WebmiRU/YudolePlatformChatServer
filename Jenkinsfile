@@ -66,7 +66,7 @@ pipeline {
             environment {
                 GOOS = 'windows'
                 GOARCH = 'amd64'
-                GOMODCACHE = '${WORKSPACE}/.cache/go-mod'
+                GOMODCACHE = '${WORKSPACE}/cache/go-mod'
             }
             agent {
                 docker {
@@ -77,8 +77,8 @@ pipeline {
             }
 
             steps {
-                sh 'mkdir ./.cache/go-build'
-                sh 'mkdir ./.cache/go-mod'
+                sh 'mkdir ${WORKSPACE}/.cache/go-build'
+                sh 'mkdir ${WORKSPACE}/.cache/go-mod'
                 sh 'go build -buildvcs=false -o chatserver.exe'
                 sh 'ls -al'
             }

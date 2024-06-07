@@ -63,6 +63,11 @@ pipeline {
 //         }
 
         stage('Build Win64/exe') {
+            environment {
+                GOOS = 'windows'
+                GOARCH = 'amd64'
+                GOMODCACHE = '${WORKSPACE}/.cache/mods'
+            }
             agent {
                 docker {
                     image 'golang:1.22-alpine'
@@ -72,11 +77,6 @@ pipeline {
             }
 
             steps {
-                environment {
-                    GOOS = 'windows'
-                    GOARCH = 'amd64'
-                    GOMODCACHE = '${WORKSPACE}/.cache/mods'
-                }
                 sh 'go build -buildvcs=false -o chatserver.exe'
                 sh 'ls -al'
             }

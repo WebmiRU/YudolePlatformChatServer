@@ -72,7 +72,7 @@ pipeline {
                 docker {
                     image 'golang:1.22-alpine'
                     reuseNode true
-                    args '-v :${WORKSPACE}/.cache/mods:${WORKSPACE}/.cache/mods'
+//                     args '-v :${WORKSPACE}/.cache/mods:${WORKSPACE}/.cache/mods'
                 }
             }
 

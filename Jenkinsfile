@@ -31,8 +31,8 @@ pipeline {
 //                     sh 'rm -fr dist'
 //                     sh 'npm install'
                     sh 'npm run build || npm install && npm run build'
-                    sh 'ls -al'
-                    sh 'ls -al dist/assets'
+//                     sh 'ls -al'
+//                     sh 'ls -al dist/assets'
                 }
             }
         }
@@ -85,6 +85,7 @@ pipeline {
 
     post {
         always {
+            archiveArtifacts artifacts: 'themes/**/theme.json', fingerprint: true
             archiveArtifacts artifacts: 'themes/**/dist/**', fingerprint: true
             archiveArtifacts artifacts: 'chatserver.exe', fingerprint: true
             archiveArtifacts artifacts: 'config.json', fingerprint: true

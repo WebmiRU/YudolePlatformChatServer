@@ -66,13 +66,13 @@ pipeline {
             environment {
                 GOOS = 'windows'
                 GOARCH = 'amd64'
-                GOMODCACHE = '${WORKSPACE}/cache/go-mods'
+                GOMODCACHE = '/cache'
             }
             agent {
                 docker {
                     image 'golang:1.22-alpine'
                     reuseNode true
-                    args '-v :${WORKSPACE}/.cache:/cache'
+                    args '-v /var/lib/jenkins/go-cache:/cache'
                 }
             }
 

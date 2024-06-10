@@ -13,29 +13,29 @@ pipeline {
 //             }
 //         }
 
-//         stage('Build front') {
-//             agent {
-//                 docker {
-//                     image 'node:20-alpine'
-//                     reuseNode true
-//         //             args  '-v /tmp:/tmp'
-//         //             args '-v ./:/app'
-//         //             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:${WORKSPACE}/front/node_modules'
-//                 }
-//             }
-//
-//             steps {
-// //                 sh 'printenv'
-//                 dir('frontend') {
-//                     sh 'rm -f package-lock.json'
-// //                     sh 'rm -fr dist'
-// //                     sh 'npm install'
-//                     sh 'npm run build || npm install && npm run build'
-// //                     sh 'ls -al'
-// //                     sh 'ls -al dist/assets'
-//                 }
-//             }
-//         }
+        stage('Build front') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    reuseNode true
+        //             args  '-v /tmp:/tmp'
+        //             args '-v ./:/app'
+        //             args '-v /var/lib/jenkins/docker_volumes/yudoleplatform/chatserver/front/node_modules:${WORKSPACE}/front/node_modules'
+                }
+            }
+
+            steps {
+//                 sh 'printenv'
+                dir('frontend') {
+                    sh 'rm -f package-lock.json'
+//                     sh 'rm -fr dist'
+//                     sh 'npm install'
+                    sh 'npm run build || npm install && npm run build'
+//                     sh 'ls -al'
+//                     sh 'ls -al dist/assets'
+                }
+            }
+        }
 
         stage('Build themes') {
             agent {
@@ -64,25 +64,25 @@ pipeline {
             }
         }
 
-//         stage('Build Win64/exe') {
-//             environment {
-//                 GOOS = 'windows'
-//                 GOARCH = 'amd64'
-//                 GOMODCACHE = '/cache'
-//             }
-//             agent {
-//                 docker {
-//                     image 'golang:1.22-alpine'
-//                     reuseNode true
-//                     args '-v /var/lib/jenkins/go-cache:/cache'
-// //                     args '-v "${WORKSPACE}/.cache:/cache"'
-//                 }
-//             }
-//
-//             steps {
-//                 sh 'go build -buildvcs=false -o chatserver.exe'
-//             }
-//         }
+        stage('Build Win64/exe') {
+            environment {
+                GOOS = 'windows'
+                GOARCH = 'amd64'
+                GOMODCACHE = '/cache'
+            }
+            agent {
+                docker {
+                    image 'golang:1.22-alpine'
+                    reuseNode true
+                    args '-v /var/lib/jenkins/go-cache:/cache'
+//                     args '-v "${WORKSPACE}/.cache:/cache"'
+                }
+            }
+
+            steps {
+                sh 'go build -buildvcs=false -o chatserver.exe'
+            }
+        }
     }
 
     post {

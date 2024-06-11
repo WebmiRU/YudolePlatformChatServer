@@ -107,7 +107,7 @@ func loadModules() {
 
 func loadThemes() {
 	themesList, _ := os.ReadDir(currentDir + fmt.Sprintf("%c%s", os.PathSeparator, "themes"))
-	log.Println("THL", themesList)
+	//log.Println("THL", themesList)
 
 	for _, dir := range themesList {
 		path := currentDir + string(os.PathSeparator) + "themes" + string(os.PathSeparator) + dir.Name()

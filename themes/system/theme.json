@@ -1,6 +1,20 @@
 {
     "title": "System theme",
     "tabs": {
+        "main": {
+            "title": "Основные настройки",
+            "fields": {
+                "show_time": {
+                    "type": "checkbox",
+                    "label": "Показывать время",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": true,
+                    "items": null
+                }
+            }
+        },
         "animation": {
             "title": "Анимация",
             "fields": {
@@ -10,7 +24,7 @@
                     "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
                     "placeholder": "1000",
                     "validation": "",
-                    "value": 100,
+                    "value": 12345,
                     "items": null
                 },
                 "type": {
@@ -30,29 +44,6 @@
                             "value": "from_right"
                         }
                     ]
-                }
-            }
-        },
-        "tab2": {
-            "title": "Вкладка #2",
-            "fields": {
-                "login": {
-                    "type": "string",
-                    "label": "Login 2",
-                    "description": "",
-                    "placeholder": "Login 2",
-                    "validation": "",
-                    "value": "Test 1",
-                    "items": null
-                },
-                "password": {
-                    "type": "string",
-                    "label": "Password 2",
-                    "description": "",
-                    "placeholder": "Password 2",
-                    "validation": "",
-                    "value": "Test 2",
-                    "items": null
                 }
             }
         }

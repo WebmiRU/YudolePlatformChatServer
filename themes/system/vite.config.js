@@ -12,6 +12,14 @@ export default defineConfig({
             },
             '/chat': {
                 target: 'http://127.0.0.1:80',
+                // changeOrigin: true,
+            },
+            '/chat/streamer/style.sass': {
+                target: 'http://127.0.0.1:80',
+                changeOrigin: true,
+            },
+            '/chat/stream/style.sass': {
+                target: 'http://127.0.0.1:80',
                 changeOrigin: true,
             },
         },

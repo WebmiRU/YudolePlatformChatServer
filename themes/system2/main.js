@@ -1,4 +1,6 @@
-const sse = new EventSource("http://127.0.0.1/events?subscribe[]=event1&subscribe[]=stream/chat/message&channel=stream")
+import('./style.sass')
+
+const sse = new EventSource("http://127.0.0.1/events?subscribe[]=event1&subscribe[]=stream/chat/message&channel=streamer")
 const msgTemplate = document.querySelector("#template-message")
 const messages = document.querySelector("#messages")
 let config = {}

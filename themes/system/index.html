@@ -4,17 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YudolePlatform System theme</title>
-      <link href="./style.sass" rel="stylesheet" />
+      <link href="./style.css" rel="stylesheet" lang="sass" />
       <template id="template-message">
           <div class="message">
-              <div class="header"><img class="service-icon" alt="" />{{ user.nick }}</div>
-              <div class="content">{{html}}</div>
+              <img class="service-icon" alt="" /> <span class="time">123</span> <b>{{ user.nick }}</b>&nbsp;&nbsp;&nbsp;{{html}}
           </div>
       </template>
   </head>
   <body>
-    <h1>Chat index page</h1>
-    <div id="messages" class="messages" style="border: 3px dotted darkred"></div>
+    <h1>Chat index page 1</h1>
+    <div id="messages" class="messages"></div>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

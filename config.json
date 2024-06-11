@@ -55,6 +55,57 @@
                                     }
                                 }
                             },
+                            "main": {
+                                "title": "Основные настройки",
+                                "fields": {
+                                    "show_time": {
+                                        "type": "checkbox",
+                                        "label": "Показывать время",
+                                        "description": "",
+                                        "placeholder": "",
+                                        "validation": "",
+                                        "value": true,
+                                        "items": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "system2": {
+                        "title": "System theme 2",
+                        "tabs": {
+                            "animation": {
+                                "title": "Анимация",
+                                "fields": {
+                                    "animation_time": {
+                                        "type": "integer",
+                                        "label": "Время анимации показа сообщения",
+                                        "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+                                        "placeholder": "1000",
+                                        "validation": "",
+                                        "value": 100,
+                                        "items": null
+                                    },
+                                    "type": {
+                                        "type": "select",
+                                        "label": "Тип анимации",
+                                        "description": "",
+                                        "placeholder": "",
+                                        "validation": "",
+                                        "value": "from_right",
+                                        "items": [
+                                            {
+                                                "title": "Появление сообщений слева",
+                                                "value": "from_left"
+                                            },
+                                            {
+                                                "title": "Появление сообщений справа",
+                                                "value": "from_right"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
                             "tab2": {
                                 "title": "Вкладка #2",
                                 "fields": {
@@ -91,13 +142,13 @@
                 "event3"
             ],
             "service_icons": {
-                "twitch": "/resource/module/twitch_client/img/twitch_1.png"
+                "twitch": "/resource/module/twitch_client/img/twitch_2.png"
             },
             "theme": {
-                "name": "system",
+                "name": "system2",
                 "config": {
-                    "system": {
-                        "title": "System theme",
+                    "system2": {
+                        "title": "System theme 2",
                         "tabs": {
                             "animation": {
                                 "title": "Анимация",
@@ -108,7 +159,7 @@
                                         "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
                                         "placeholder": "1000",
                                         "validation": "",
-                                        "value": 12345,
+                                        "value": 100,
                                         "items": null
                                     },
                                     "type": {

@@ -3,6 +3,7 @@ const msgTemplate = document.querySelector("#template-message")
 const messages = document.querySelector("#messages")
 let config = {}
 
+
 let macros = [];
 [...msgTemplate.innerHTML.matchAll(/{{\s*(([a-z]+\.?)+)\s*}}/gm)].forEach(v => {
     macros.push({
@@ -21,19 +22,35 @@ function value(obj, path) {
 
 sse.onmessage = function (event) {
     let msg = JSON.parse(event.data);
+    const date = new Date();
+
     console.log(msg)
 
     switch (msg.type) {
         case "system/channel/config":
-            console.log("THEME CONFIG RECEIVED")
-            console.log(msg)
             config = msg
+            const themeName = msg.payload.theme.name
+
+            console.log(themeName)
+
             break;
         case "stream/chat/message":
+            // @TODO Заменить картинку на DIV + URL + переменную в CSS
             const template = document.querySelector("#template-message")
             template.content.querySelector('.service-icon').setAttribute('src', config.payload.service_icons[msg.service])
+            template.content.querySelector('.time').innerHTML = date.toTimeString().split(' ')[0]
+
+            // Показывать/скрывать время
+            if (config.payload.theme.config[config.payload.theme.name].tabs.main.fields.show_time.value) {
+                document.documentElement.style.setProperty('--time_display', 'inline');
+            } else {
+                document.documentElement.style.setProperty('--time_display', 'none');
+            }
+
 
             let message = template.innerHTML
+
+
             macros.forEach(m => {
                 message = message.replaceAll(m.macro, value(msg.payload, m.path))
             })

@@ -128,11 +128,11 @@ func main() {
 	loadModules()
 
 	//go func() {
-	//	for {
-	//		fmt.Println(sseClients)
-	//		fmt.Println(sseEventSubs)
-	//		time.Sleep(2 * time.Second)
-	//	}
+	//	time.Sleep(10 * time.Second)
+	//	fmt.Println("RESTART")
+	//	code, err := modules["twitch_client"].RestartWait()
+	//	fmt.Println(code, err)
+	//	fmt.Println("STARTED")
 	//}()
 
 	httpServer()

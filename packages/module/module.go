@@ -105,9 +105,44 @@ func (m *Module) Stop() error {
 	return nil
 }
 
-//func (m *Module) Json() error {
-//	var data []byte
-//	err := json.Unmarshal(data, &m)
-//
-//	return err
-//}
+func (m *Module) StopWait() (int, error) {
+	if err := m.Exec.Process.Kill(); err != nil {
+		return 0, err
+	}
+
+	wait, err := m.Exec.Process.Wait()
+	m.isRunning = false
+
+	if err != nil {
+		return 0, err
+	}
+
+	return wait.ExitCode(), nil
+}
+
+func (m *Module) RestartWait() (int, error) {
+	exitCode := 0
+
+	if exCode, err := m.StopWait(); err != nil {
+		exitCode = exCode
+		return exCode, err
+	}
+
+	if err := m.Start(); err != nil {
+		return 0, err
+	}
+
+	return exitCode, nil
+}
+
+func (m *Module) Restart() error {
+	if err := m.Stop(); err != nil {
+		return err
+	}
+
+	if err := m.Start(); err != nil {
+		return err
+	}
+
+	return nil
+}

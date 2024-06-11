@@ -149,7 +149,9 @@ func httpChatChannelHandler(w http.ResponseWriter, r *http.Request) {
 	f, err := os.Open(fullPath)
 
 	switch strings.ToLower(filepath.Ext(path)) {
-	case ".css", ".scss", ".sass":
+	case ".css": //, ".scss", ".sass":
+		w.Header().Set("Content-Type", "text/css")
+	case ".scss", ".sass":
 		w.Header().Set("Content-Type", "text/css")
 	case ".js", "javascript":
 		w.Header().Set("Content-Type", "text/javascript")

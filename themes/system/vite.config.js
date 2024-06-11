@@ -1,23 +1,28 @@
 import { defineConfig } from 'vite'
 
+
+
 export default defineConfig({
     base: '',
     // base: './',
     server: {
+        // watch: {
+        //     usePolling: true
+        // },
         proxy: {
             '/resource': 'http://127.0.0.1:80',
             '/api': {
                 target: 'http://127.0.0.1:80',
                 changeOrigin: true,
             },
-            '/chat': {
-                target: 'http://127.0.0.1:80',
-                // changeOrigin: true,
-            },
-            '/chat/streamer/style.sass': {
-                target: 'http://127.0.0.1:80',
-                changeOrigin: true,
-            },
+            // '/chat': {
+            //     target: 'http://127.0.0.1:80',
+            //     changeOrigin: true,
+            // },
+            // '/chat/streamer/style.sass': {
+            //     target: 'http://127.0.0.1:80',
+            //     changeOrigin: true,
+            // },
             '/chat/stream/style.sass': {
                 target: 'http://127.0.0.1:80',
                 changeOrigin: true,

@@ -3,6 +3,7 @@ const msgTemplate = document.querySelector("#template-message")
 const messages = document.querySelector("#messages")
 let config = {}
 
+// import "./style.sass"
 
 let macros = [];
 [...msgTemplate.innerHTML.matchAll(/{{\s*(([a-z]+\.?)+)\s*}}/gm)].forEach(v => {

@@ -45,8 +45,8 @@ export default defineComponent({
           :options="value.tabs[tabKey]['fields'][fieldKey].items"
           optionLabel="title"
           option-value="value"
-          placeholder="Select a City"
-          class="w-full md:w-14rem"
+          placeholder="Выберите значение"
+          class="w-full"
         />
         <InputSwitch
           v-if="field.type == 'checkbox'"

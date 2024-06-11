@@ -14,7 +14,7 @@ export default {
       themes: null,
       resources: null,
       modules: null,
-      themesList: [],
+      // themesList: [],
     }
   },
   async mounted() {
@@ -26,7 +26,7 @@ export default {
 
     this.model = await APIService.channelsGet(this.$route.params.id)
     this.themes = await APIService.apiGet('http://127.0.0.1/api/themes')
-    this.themesList = Object.keys(this.themes.payload)
+    // this.themesList = Object.keys(this.themes.payload)
     this.resources = await APIService.apiGet('http://127.0.0.1/api/resources')
     this.modules = await APIService.apiGet('http://127.0.0.1/api/modules')
 

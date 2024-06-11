@@ -100,7 +100,7 @@ func loadModules() {
 		}
 	}
 
-	fmt.Println(resources)
+	//fmt.Println(resources)
 
 	loadThemes()
 }

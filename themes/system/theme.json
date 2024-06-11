@@ -1,51 +1,51 @@
 {
-    "title": "System theme",
-    "tabs": {
-        "main": {
-            "title": "Основные настройки",
-            "fields": {
-                "show_time": {
-                    "type": "checkbox",
-                    "label": "Показывать время",
-                    "description": "",
-                    "placeholder": "",
-                    "validation": "",
-                    "value": true,
-                    "items": null
-                }
-            }
-        },
-        "animation": {
-            "title": "Анимация",
-            "fields": {
-                "animation_time": {
-                    "type": "integer",
-                    "label": "Время анимации показа сообщения",
-                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
-                    "placeholder": "1000",
-                    "validation": "",
-                    "value": 12345,
-                    "items": null
-                },
-                "type": {
-                    "type": "select",
-                    "label": "Тип анимации",
-                    "description": "",
-                    "placeholder": "",
-                    "validation": "",
-                    "value": "from_right",
-                    "items": [
-                        {
-                            "title": "Появление сообщений слева",
-                            "value": "from_left"
-                        },
-                        {
-                            "title": "Появление сообщений справа",
-                            "value": "from_right"
-                        }
-                    ]
-                }
-            }
+  "title": "System theme",
+  "tabs": {
+    "main": {
+      "title": "Основные настройки",
+      "fields": {
+        "show_time": {
+          "type": "checkbox",
+          "label": "Показывать время",
+          "description": "",
+          "placeholder": "",
+          "validation": "",
+          "value": true,
+          "items": null
         }
+      }
+    },
+    "animation": {
+      "title": "Анимация",
+      "fields": {
+        "animation_time": {
+          "type": "integer",
+          "label": "Время анимации показа сообщения",
+          "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+          "placeholder": "1000",
+          "validation": "",
+          "value": 12345,
+          "items": null
+        },
+        "type": {
+          "type": "select",
+          "label": "Тип анимации",
+          "description": "",
+          "placeholder": "",
+          "validation": "",
+          "value": "from_right",
+          "items": [
+            {
+              "title": "Появление сообщений слева",
+              "value": "from_left"
+            },
+            {
+              "title": "Появление сообщений справа",
+              "value": "from_right"
+            }
+          ]
+        }
+      }
     }
+  }
 }

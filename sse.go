@@ -11,9 +11,10 @@ import (
 )
 
 type sseClient struct {
-	W    *http.ResponseWriter
-	R    *http.Request
-	Chan *chan any
+	W       *http.ResponseWriter
+	R       *http.Request
+	Chan    *chan any
+	Channel string
 }
 
 func (c *sseClient) Send(message any) error {
@@ -42,6 +43,18 @@ func (c *sseClient) Drop() error {
 	return nil
 }
 
+// SendConfig Функция отправки настроек канала SSE клиенту
+func (c *sseClient) SendConfig() error {
+	if _, ok := config.Channels[c.Channel]; ok {
+		c.Send(resource.ChannelConfig{
+			Type:    "system/channel/config",
+			Payload: config.Channels[c.Channel],
+		})
+	}
+
+	return nil
+}
+
 var sseClientsMutex sync.Mutex
 var sseEventSubsMutex sync.Mutex
 
@@ -58,9 +71,10 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 
 	ch := make(chan any)
 	client := &sseClient{
-		W:    &w,
-		R:    r,
-		Chan: &ch,
+		W:       &w,
+		R:       r,
+		Chan:    &ch,
+		Channel: r.URL.Query().Get("channel"),
 	}
 
 	subscribe := r.URL.Query()["subscribe[]"]
@@ -80,15 +94,25 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 	sseClientsMutex.Unlock()
 
 	go func() {
-		channel := r.URL.Query().Get("channel")
-
-		if _, ok := config.Channels[channel]; ok {
-			client.Send(resource.ChannelConfig{
-				Type:    "system/channel/config",
-				Payload: config.Channels[channel],
-			})
+		if err := client.SendConfig(); err != nil {
+			log.Println(err)
+			return
 		}
 	}()
+
+	//go func() {
+	//	channel := r.URL.Query().Get("channel")
+	//
+	//	client.Channel = channel
+	//
+	//	// Отправляем клиенту конфиг канала после подключения
+	//	if _, ok := config.Channels[channel]; ok {
+	//		client.Send(resource.ChannelConfig{
+	//			Type:    "system/channel/config",
+	//			Payload: config.Channels[channel],
+	//		})
+	//	}
+	//}()
 
 loop:
 	for {

@@ -1,214 +1,214 @@
 {
-    "autostart_modules": null,
-    "tcp_server": {
-        "host": "0.0.0.0",
-        "port": 5127
-    },
-    "http_server": {
-        "host": "0.0.0.0",
-        "port": 5128
-    },
-    "channels": {
-        "stream": {
-            "title": "Канал для зрителей",
-            "events": null,
-            "service_icons": {
-                "goodgame": "/resource/module/client2/img/twitch_1.png",
-                "service_1": "url101",
-                "twitch": "/resource/module/twitch_client/img/twitch_1.png"
-            },
-            "theme": {
-                "name": "system",
-                "config": {
-                    "system": {
-                        "title": "System theme",
-                        "tabs": {
-                            "animation": {
-                                "title": "Анимация",
-                                "fields": {
-                                    "animation_time": {
-                                        "type": "integer",
-                                        "label": "Время анимации показа сообщения",
-                                        "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
-                                        "placeholder": "1000",
-                                        "validation": "",
-                                        "value": 12345,
-                                        "items": null
-                                    },
-                                    "type": {
-                                        "type": "select",
-                                        "label": "Тип анимации",
-                                        "description": "",
-                                        "placeholder": "",
-                                        "validation": "",
-                                        "value": "from_right",
-                                        "items": [
-                                            {
-                                                "title": "Появление сообщений слева",
-                                                "value": "from_left"
-                                            },
-                                            {
-                                                "title": "Появление сообщений справа",
-                                                "value": "from_right"
-                                            }
-                                        ]
-                                    }
-                                }
-                            },
-                            "main": {
-                                "title": "Основные настройки",
-                                "fields": {
-                                    "show_time": {
-                                        "type": "checkbox",
-                                        "label": "Показывать время",
-                                        "description": "",
-                                        "placeholder": "",
-                                        "validation": "",
-                                        "value": true,
-                                        "items": null
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "system2": {
-                        "title": "System theme 2",
-                        "tabs": {
-                            "animation": {
-                                "title": "Анимация",
-                                "fields": {
-                                    "animation_time": {
-                                        "type": "integer",
-                                        "label": "Время анимации показа сообщения",
-                                        "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
-                                        "placeholder": "1000",
-                                        "validation": "",
-                                        "value": 100,
-                                        "items": null
-                                    },
-                                    "type": {
-                                        "type": "select",
-                                        "label": "Тип анимации",
-                                        "description": "",
-                                        "placeholder": "",
-                                        "validation": "",
-                                        "value": "from_right",
-                                        "items": [
-                                            {
-                                                "title": "Появление сообщений слева",
-                                                "value": "from_left"
-                                            },
-                                            {
-                                                "title": "Появление сообщений справа",
-                                                "value": "from_right"
-                                            }
-                                        ]
-                                    }
-                                }
-                            },
-                            "tab2": {
-                                "title": "Вкладка #2",
-                                "fields": {
-                                    "login": {
-                                        "type": "string",
-                                        "label": "Login 2",
-                                        "description": "",
-                                        "placeholder": "Login 2",
-                                        "validation": "",
-                                        "value": "Test 1",
-                                        "items": null
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "label": "Password 2",
-                                        "description": "",
-                                        "placeholder": "Password 2",
-                                        "validation": "",
-                                        "value": "Test 2",
-                                        "items": null
-                                    }
-                                }
-                            }
-                        }
-                    }
+  "autostart_modules": null,
+  "tcp_server": {
+    "host": "0.0.0.0",
+    "port": 5127
+  },
+  "http_server": {
+    "host": "0.0.0.0",
+    "port": 5128
+  },
+  "channels": {
+    "stream": {
+      "title": "Канал для зрителей",
+      "events": null,
+      "service_icons": {
+        "goodgame": "/resource/module/client2/img/twitch_1.png",
+        "service_1": "url101",
+        "twitch": "/resource/module/twitch_client/img/twitch_1.png"
+      },
+      "theme": {
+        "name": "system",
+        "config": {
+          "system": {
+            "title": "System theme",
+            "tabs": {
+              "animation": {
+                "title": "Анимация",
+                "fields": {
+                  "animation_time": {
+                    "type": "integer",
+                    "label": "Время анимации показа сообщения",
+                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+                    "placeholder": "1000",
+                    "validation": "",
+                    "value": 12345,
+                    "items": null
+                  },
+                  "type": {
+                    "type": "select",
+                    "label": "Тип анимации",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": "from_right",
+                    "items": [
+                      {
+                        "title": "Появление сообщений слева",
+                        "value": "from_left"
+                      },
+                      {
+                        "title": "Появление сообщений справа",
+                        "value": "from_right"
+                      }
+                    ]
+                  }
                 }
-            }
-        },
-        "streamer": {
-            "title": "Канал для стримера",
-            "events": [
-                "event1",
-                "event2",
-                "event3"
-            ],
-            "service_icons": {
-                "twitch": "/resource/module/twitch_client/img/twitch_2.png"
-            },
-            "theme": {
-                "name": "system2",
-                "config": {
-                    "system2": {
-                        "title": "System theme 2",
-                        "tabs": {
-                            "animation": {
-                                "title": "Анимация",
-                                "fields": {
-                                    "animation_time": {
-                                        "type": "integer",
-                                        "label": "Время анимации показа сообщения",
-                                        "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
-                                        "placeholder": "1000",
-                                        "validation": "",
-                                        "value": 100,
-                                        "items": null
-                                    },
-                                    "type": {
-                                        "type": "select",
-                                        "label": "Тип анимации",
-                                        "description": "",
-                                        "placeholder": "",
-                                        "validation": "",
-                                        "value": "from_right",
-                                        "items": [
-                                            {
-                                                "title": "Появление сообщений слева",
-                                                "value": "from_left"
-                                            },
-                                            {
-                                                "title": "Появление сообщений справа",
-                                                "value": "from_right"
-                                            }
-                                        ]
-                                    }
-                                }
-                            },
-                            "tab2": {
-                                "title": "Вкладка #2",
-                                "fields": {
-                                    "login": {
-                                        "type": "string",
-                                        "label": "Login 2",
-                                        "description": "",
-                                        "placeholder": "Login 2",
-                                        "validation": "",
-                                        "value": "Test 1",
-                                        "items": null
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "label": "Password 2",
-                                        "description": "",
-                                        "placeholder": "Password 2",
-                                        "validation": "",
-                                        "value": "Test 2",
-                                        "items": null
-                                    }
-                                }
-                            }
-                        }
-                    }
+              },
+              "main": {
+                "title": "Основные настройки",
+                "fields": {
+                  "show_time": {
+                    "type": "checkbox",
+                    "label": "Показывать время",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": true,
+                    "items": null
+                  }
                 }
+              }
             }
+          },
+          "system2": {
+            "title": "System theme 2",
+            "tabs": {
+              "animation": {
+                "title": "Анимация",
+                "fields": {
+                  "animation_time": {
+                    "type": "integer",
+                    "label": "Время анимации показа сообщения",
+                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+                    "placeholder": "1000",
+                    "validation": "",
+                    "value": 100,
+                    "items": null
+                  },
+                  "type": {
+                    "type": "select",
+                    "label": "Тип анимации",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": "from_right",
+                    "items": [
+                      {
+                        "title": "Появление сообщений слева",
+                        "value": "from_left"
+                      },
+                      {
+                        "title": "Появление сообщений справа",
+                        "value": "from_right"
+                      }
+                    ]
+                  }
+                }
+              },
+              "tab2": {
+                "title": "Вкладка #2",
+                "fields": {
+                  "login": {
+                    "type": "string",
+                    "label": "Login 2",
+                    "description": "",
+                    "placeholder": "Login 2",
+                    "validation": "",
+                    "value": "Test 1",
+                    "items": null
+                  },
+                  "password": {
+                    "type": "string",
+                    "label": "Password 2",
+                    "description": "",
+                    "placeholder": "Password 2",
+                    "validation": "",
+                    "value": "Test 2",
+                    "items": null
+                  }
+                }
+              }
+            }
+          }
         }
+      }
+    },
+    "streamer": {
+      "title": "Канал для стримера",
+      "events": [
+        "event1",
+        "event2",
+        "event3"
+      ],
+      "service_icons": {
+        "twitch": "/resource/module/twitch_client/img/twitch_2.png"
+      },
+      "theme": {
+        "name": "system2",
+        "config": {
+          "system2": {
+            "title": "System theme 2",
+            "tabs": {
+              "animation": {
+                "title": "Анимация",
+                "fields": {
+                  "animation_time": {
+                    "type": "integer",
+                    "label": "Время анимации показа сообщения",
+                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+                    "placeholder": "1000",
+                    "validation": "",
+                    "value": 100,
+                    "items": null
+                  },
+                  "type": {
+                    "type": "select",
+                    "label": "Тип анимации",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": "from_right",
+                    "items": [
+                      {
+                        "title": "Появление сообщений слева",
+                        "value": "from_left"
+                      },
+                      {
+                        "title": "Появление сообщений справа",
+                        "value": "from_right"
+                      }
+                    ]
+                  }
+                }
+              },
+              "tab2": {
+                "title": "Вкладка #2",
+                "fields": {
+                  "login": {
+                    "type": "string",
+                    "label": "Login 2",
+                    "description": "",
+                    "placeholder": "Login 2",
+                    "validation": "",
+                    "value": "Test 1",
+                    "items": null
+                  },
+                  "password": {
+                    "type": "string",
+                    "label": "Password 2",
+                    "description": "",
+                    "placeholder": "Password 2",
+                    "validation": "",
+                    "value": "Test 2",
+                    "items": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  }
 }

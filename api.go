@@ -276,8 +276,14 @@ func channelsPageHandler(w http.ResponseWriter, r *http.Request) {
 
 		config.Channels[id] = ch.Payload
 
-		cfg, _ := json.MarshalIndent(config, "", "    ")
+		cfg, _ := json.MarshalIndent(config, "", "  ")
 		os.WriteFile("./config.json", cfg, 0666)
+
+		for _, client := range sseClients {
+			if err := client.SendConfig(); err != nil {
+				log.Println(err)
+			}
+		}
 	}
 
 	// Remap default theme values with channel settings

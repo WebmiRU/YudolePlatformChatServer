@@ -49,7 +49,7 @@ func (m *Module) Load(configPath string) error {
 }
 
 func (m *Module) Save() error {
-	if data, err := json.MarshalIndent(m, "", "    "); err != nil {
+	if data, err := json.MarshalIndent(m, "", "  "); err != nil {
 		return err
 	} else {
 		if err := os.WriteFile(m.configPath, data, 0666); err != nil {

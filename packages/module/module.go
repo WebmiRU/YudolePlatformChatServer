@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+//github.com/WebmiRU/YudolePlatformPackages/module
+
 type Resource struct {
 	Path string `json:"path"`
 	Type string `json:"type"`

@@ -7,6 +7,7 @@ import store from "../../store"
 import APIService from "../../services/APIService"
 
 export default {
+  inject: ['sse'],
   computed: {},
   components: {},
   data() {
@@ -23,12 +24,24 @@ export default {
 
     this.model = await APIService.modulesIndexGet()
 
-    this.updateInterval = setInterval(async () => {
-      this.model = await APIService.modulesIndexGet()
-    }, 2000)
+    // this.updateInterval = setInterval(async () => {
+    //   this.model = await APIService.modulesIndexGet()
+    // }, 2000)
+
+    this.sse.onmessage = async (ev) => {
+      // console.log('MODULE EVENT', ev)
+
+      const message = JSON.parse(ev.data)
+      if (message.type === 'api/modules/update') {
+        this.model = await APIService.modulesIndexGet()
+      }
+    }
+
+    console.log(this.sse)
   },
   unmounted() {
-    clearInterval(this.updateInterval)
+    // clearInterval(this.updateInterval)
+    this.sse.onmessage = null
   },
   methods: {
     moduleStateChange(id, state) {

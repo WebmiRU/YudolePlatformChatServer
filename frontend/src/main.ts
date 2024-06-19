@@ -18,6 +18,7 @@ import InputSwitch from 'primevue/inputswitch'
 import InputText from "primevue/inputtext"
 import InputNumber from "primevue/inputnumber"
 import Dropdown from 'primevue/dropdown'
+import InputGroup from 'primevue/inputgroup'
 
 
 
@@ -75,6 +76,7 @@ app.component('InputSwitch', InputSwitch)
 app.component('InputText', InputText)
 app.component('InputNumber', InputNumber)
 app.component('Dropdown', Dropdown)
+app.component('InputGroup', InputGroup)
 
 
 app.mount('#app')

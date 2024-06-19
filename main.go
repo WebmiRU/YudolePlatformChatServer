@@ -25,9 +25,15 @@ var config Config
 var currentDir string
 var modules = make(map[string]*module.Module)
 var themes = make(map[string]*theme.Theme)
-var events = []string{"event/subscribe", "event/unsubscribe", "stream/chat/message", "stream/chat/private_message"} // All known events
 var services []string
 var resources map[string][]string
+var events = []string{
+	"event/subscribe",
+	"event/unsubscribe",
+	"stream/chat/message",
+	"stream/chat/private_message",
+	"api/modules/update",
+} // All known events
 
 //var channels = []string{"event/subscribe", "event/unsubscribe", "stream/chat/message", "stream/chat/private_message"} // All known events
 //var eventSubs = make(map[string][]*IClient)
@@ -128,11 +134,16 @@ func main() {
 	loadModules()
 
 	//go func() {
-	//	time.Sleep(10 * time.Second)
-	//	fmt.Println("RESTART")
-	//	code, err := modules["twitch_client"].RestartWait()
-	//	fmt.Println(code, err)
-	//	fmt.Println("STARTED")
+	//	for {
+	//		time.Sleep(5 * time.Second)
+	//		for _, c := range sseClients {
+	//			c.Send(Message{Module: "client", Type: "api/modules/update", Payload: nil})
+	//		}
+	//		//fmt.Println("RESTART")
+	//		//code, err := modules["twitch_client"].RestartWait()
+	//		//fmt.Println(code, err)
+	//		//fmt.Println("STARTED")
+	//	}
 	//}()
 
 	httpServer()

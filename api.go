@@ -103,6 +103,15 @@ func modulesIdHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(400)
 			return
 		}
+
+		go func() {
+			_, err := modules[id].RestartWait()
+			if err != nil {
+				fmt.Printf("Module %s restarting error: %s\n", id, err)
+			}
+
+			fmt.Printf("Module %s restarted\n", id)
+		}()
 	}
 
 	model := resource.Module{
@@ -162,7 +171,17 @@ func modulesIdStartHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		modules[id].Start()
+		go func() {
+			if err := modules[id].Start(); err != nil {
+				log.Println("Module start error", err)
+			}
+
+			for _, c := range sseClients {
+				c.Send(Message{Type: "api/modules/update"})
+			}
+		}()
+
+		//modules[id].Start()
 
 		model := resource.ModuleIndex{Payload: modules}
 		resp, _ := json.Marshal(model)
@@ -189,7 +208,16 @@ func modulesIdStopHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		modules[id].Stop()
+		go func() {
+			if _, err := modules[id].StopWait(); err != nil {
+				log.Println("Module stop error", err)
+			}
+
+			for _, c := range sseClients {
+				c.Send(Message{Type: "api/modules/update"})
+			}
+		}()
+		//modules[id].Stop()
 
 		model := resource.ModuleIndex{Payload: modules}
 		resp, _ := json.Marshal(model)

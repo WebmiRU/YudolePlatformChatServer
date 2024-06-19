@@ -53,7 +53,13 @@ export default defineComponent({
           v-model="value.tabs[tabKey]['fields'][fieldKey].value"
         />
 
-        <small v-if="field.description.length">{{ field.description }}</small>
+        <InputGroup v-if="field.type == 'string_list'" v-for="(v, i) in value.tabs[tabKey]['fields'][fieldKey].value ?? ['']">
+          <InputText placeholder="Channel name" v-model="value.tabs[tabKey]['fields'][fieldKey].value[i]" />
+          <Button @click="value.tabs[tabKey]['fields'][fieldKey].value.push('')" icon="pi pi-plus" severity="success" />
+          <Button v-if="value.tabs[tabKey]['fields'][fieldKey].value?.length > 1" @click="value.tabs[tabKey]['fields'][fieldKey].value.splice(i, 1)" icon="pi pi-times" severity="danger" />
+        </InputGroup>
+
+        <small v-if="field.description.length" v-html="field.description"></small>
       </div>
     </TabPanel>
   </TabView>

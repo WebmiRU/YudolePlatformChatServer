@@ -47,17 +47,28 @@ var events = []string{
 //var eventSubsMutex sync.Mutex
 
 func broadcast(message IMessage) {
-	sseEventSubsMutex.Lock()
-	fmt.Println("BROADCAST TYPE", message.GetType())
+	//fmt.Println("BROADCAST TYPE", message.GetType())
 
-	for _, v := range sseEventSubs[message.GetType()] {
-		err := v.Send(message)
+	// Broadcast SSE clients
+	sseEventSubsMutex.Lock()
+	for _, c := range sseEventSubs[message.GetType()] {
+		err := c.Send(message)
 		if err != nil {
 			log.Println("Error sending message:", err)
 		}
 	}
-
 	sseEventSubsMutex.Unlock()
+
+	// Broadcast TCP clients
+	tcpEventSubsMutex.Lock()
+	for _, c := range tcpEventSubs[message.GetType()] {
+		if err := c.Send(message); err != nil {
+			log.Println("Error sending message:", err)
+			c.Drop()
+			return
+		}
+	}
+	tcpEventSubsMutex.Unlock()
 }
 
 func Init() {

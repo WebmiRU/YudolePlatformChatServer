@@ -28,6 +28,10 @@ type tcpMessageRaw struct {
 	Payload json.RawMessage `json:"payload"`
 }
 
+func (m tcpMessageRaw) GetType() string {
+	return m.Type
+}
+
 type tcpClient struct {
 	conn *net.Conn
 }
@@ -141,13 +145,13 @@ loop:
 			continue
 		}
 
-		// @TODO for testing
-		for _, v := range sseEventSubs[msg.Type] {
-			err := v.Send(msg)
-			if err != nil {
-				fmt.Println("Error sending message:", err)
-			}
-		}
+		//// @TODO for testing
+		//for _, v := range sseEventSubs[msg.Type] {
+		//	err := v.Send(msg)
+		//	if err != nil {
+		//		fmt.Println("Error sending message:", err)
+		//	}
+		//}
 
 		//fmt.Println("Received message type:", msg.Type)
 
@@ -195,15 +199,17 @@ loop:
 			}
 		}
 
-		tcpEventSubsMutex.Lock()
-		for _, client := range tcpEventSubs[msg.Type] {
-			if err := client.Send(msg); err != nil {
-				log.Println("Error sending message:", err)
-				client.Drop()
-				return
-			}
-		}
-		tcpEventSubsMutex.Unlock()
+		broadcast(msg)
+
+		//tcpEventSubsMutex.Lock()
+		//for _, client := range tcpEventSubs[msg.Type] {
+		//	if err := client.Send(msg); err != nil {
+		//		log.Println("Error sending message:", err)
+		//		client.Drop()
+		//		return
+		//	}
+		//}
+		//tcpEventSubsMutex.Unlock()
 
 		//fmt.Println("Received data:", msg)
 	}

@@ -30,14 +30,15 @@ export default {
 
     this.sse.onmessage = async (ev) => {
       // console.log('MODULE EVENT', ev)
-
       const message = JSON.parse(ev.data)
-      if (message.type === 'api/modules/update') {
-        this.model = await APIService.modulesIndexGet()
+      console.log('MODULE EVENT', message)
+
+      if (message.type === 'api/modules/update/index') {
+        this.model = message
       }
     }
 
-    console.log(this.sse)
+    // console.log(this.sse)
   },
   unmounted() {
     // clearInterval(this.updateInterval)
@@ -48,10 +49,12 @@ export default {
       APIService.putModulesIdSetState(id, state ? 1 : 0)
     },
     async moduleStart(id: string) {
-      this.model = await APIService.modulesIdStart(id)
+      // this.model = await APIService.modulesIdStart(id)
+      await APIService.modulesIdStart(id)
     },
     async moduleStop(id: string) {
-      this.model = await APIService.modulesIdStop(id)
+      // this.model = await APIService.modulesIdStop(id)
+      await APIService.modulesIdStop(id)
     },
   }
 }

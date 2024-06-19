@@ -176,9 +176,7 @@ func modulesIdStartHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println("Module start error", err)
 			}
 
-			for _, c := range sseClients {
-				c.Send(Message{Type: "api/modules/update"})
-			}
+			broadcast(Message{Type: "api/modules/update/index", Payload: modules})
 		}()
 
 		//modules[id].Start()
@@ -213,9 +211,7 @@ func modulesIdStopHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println("Module stop error", err)
 			}
 
-			for _, c := range sseClients {
-				c.Send(Message{Type: "api/modules/update"})
-			}
+			broadcast(Message{Type: "api/modules/update/index", Payload: modules})
 		}()
 		//modules[id].Stop()
 

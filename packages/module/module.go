@@ -114,6 +114,7 @@ func (m *Module) StopWait() (int, error) {
 
 	wait, err := m.Exec.Process.Wait()
 	m.isRunning = false
+	m.State = "stopped"
 
 	if err != nil {
 		return 0, err

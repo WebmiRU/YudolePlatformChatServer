@@ -13,11 +13,19 @@ import (
 	"syscall"
 )
 
+type IMessage interface {
+	GetType() string
+}
+
 type Message struct {
 	Id      string `json:"id"`
 	Module  string `json:"module"`
 	Type    string `json:"type"`
 	Payload any    `json:"payload"`
+}
+
+func (m Message) GetType() string {
+	return m.Type
 }
 
 var signals = make(chan os.Signal, 99)
@@ -32,12 +40,25 @@ var events = []string{
 	"event/unsubscribe",
 	"stream/chat/message",
 	"stream/chat/private_message",
-	"api/modules/update",
+	"api/modules/update/index",
 } // All known events
-
 //var channels = []string{"event/subscribe", "event/unsubscribe", "stream/chat/message", "stream/chat/private_message"} // All known events
 //var eventSubs = make(map[string][]*IClient)
 //var eventSubsMutex sync.Mutex
+
+func broadcast(message IMessage) {
+	sseEventSubsMutex.Lock()
+	fmt.Println("BROADCAST TYPE", message.GetType())
+
+	for _, v := range sseEventSubs[message.GetType()] {
+		err := v.Send(message)
+		if err != nil {
+			log.Println("Error sending message:", err)
+		}
+	}
+
+	sseEventSubsMutex.Unlock()
+}
 
 func Init() {
 	// Catch shutdown signals from OS
@@ -137,7 +158,7 @@ func main() {
 	//	for {
 	//		time.Sleep(5 * time.Second)
 	//		for _, c := range sseClients {
-	//			c.Send(Message{Module: "client", Type: "api/modules/update", Payload: nil})
+	//			c.Send(Message{Module: "client", Type: "api/modules/update/index", Payload: nil})
 	//		}
 	//		//fmt.Println("RESTART")
 	//		//code, err := modules["twitch_client"].RestartWait()

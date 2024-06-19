@@ -88,7 +88,7 @@ export default {
   components: {},
   data() {
     return {
-      sse: new EventSource("http://127.0.0.1/events?subscribe[]=api/modules/update"),
+      sse: new EventSource("http://127.0.0.1/events?subscribe[]=api/modules/update/index"),
     }
   },
   mounted() {

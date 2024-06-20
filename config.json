@@ -137,9 +137,9 @@
     "streamer": {
       "title": "Канал для стримера",
       "events": [
-        "event1",
-        "event2",
-        "event3"
+        "event/subscribe",
+        "stream/chat/message",
+        "api/modules/update/index"
       ],
       "service_icons": {
         "twitch": "/resource/module/twitch_client/img/twitch_2.png"
@@ -147,6 +147,57 @@
       "theme": {
         "name": "system2",
         "config": {
+          "system": {
+            "title": "System theme",
+            "tabs": {
+              "animation": {
+                "title": "Анимация",
+                "fields": {
+                  "animation_time": {
+                    "type": "integer",
+                    "label": "Время анимации показа сообщения",
+                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
+                    "placeholder": "1000",
+                    "validation": "",
+                    "value": 12345,
+                    "items": null
+                  },
+                  "type": {
+                    "type": "select",
+                    "label": "Тип анимации",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": "from_right",
+                    "items": [
+                      {
+                        "title": "Появление сообщений слева",
+                        "value": "from_left"
+                      },
+                      {
+                        "title": "Появление сообщений справа",
+                        "value": "from_right"
+                      }
+                    ]
+                  }
+                }
+              },
+              "main": {
+                "title": "Основные настройки",
+                "fields": {
+                  "show_time": {
+                    "type": "checkbox",
+                    "label": "Показывать время",
+                    "description": "",
+                    "placeholder": "",
+                    "validation": "",
+                    "value": true,
+                    "items": null
+                  }
+                }
+              }
+            }
+          },
           "system2": {
             "title": "System theme 2",
             "tabs": {

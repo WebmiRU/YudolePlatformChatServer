@@ -100,20 +100,6 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	//go func() {
-	//	channel := r.URL.Query().Get("channel")
-	//
-	//	client.Channel = channel
-	//
-	//	// Отправляем клиенту конфиг канала после подключения
-	//	if _, ok := config.Channels[channel]; ok {
-	//		client.Send(resource.ChannelConfig{
-	//			Type:    "system/channel/config",
-	//			Payload: config.Channels[channel],
-	//		})
-	//	}
-	//}()
-
 loop:
 	for {
 		select {
@@ -132,4 +118,20 @@ loop:
 
 	client.Drop()
 	fmt.Println("SSE CLIENT DISCONNECTED")
+}
+
+func apiEventsHandlerGet(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "no-cache")
+	//w.Header().Set("Connection", "keep-alive")
+	//w.Header().Set("Content-Type", "text/event-stream")
+
+	msg, _ := json.Marshal(resource.EventIndex{Payload: events})
+	w.Write(msg)
+
+	//if _, err := fmt.Fprint(w, msg); err != nil {
+	//	log.Println(err)
+	//}
+
+	w.(http.Flusher).Flush()
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import store from "../../store.ts"
+import EventsList from "../../components/EventsList.vue";
 </script>
 
 <script lang="ts">
@@ -127,11 +128,16 @@ export default {
         </table>
       </div>
     </TabPanel>
+
     <TabPanel
       header="Настройки темы"
       :disabled="!(Object.keys(themes?.payload ?? {}).find(v => v == model?.payload.theme.name))"
     >
       <Tabs v-if="model?.payload" v-model="model.payload.theme.config[model.payload.theme.name]"/>
+    </TabPanel>
+
+    <TabPanel header="События">
+      <EventsList v-if="model" v-model="model.payload.events" />
     </TabPanel>
   </TabView>
 

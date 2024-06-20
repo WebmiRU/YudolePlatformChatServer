@@ -47,8 +47,6 @@ var events = []string{
 //var eventSubsMutex sync.Mutex
 
 func broadcast(message IMessage) {
-	//fmt.Println("BROADCAST TYPE", message.GetType())
-
 	// Broadcast SSE clients
 	sseEventSubsMutex.Lock()
 	for _, c := range sseEventSubs[message.GetType()] {

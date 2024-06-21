@@ -39,7 +39,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h3>Events list</h3>
+  <h3>Подписка на события</h3>
 
   <DataTable v-if="events" :value="events.payload" stripedRows showGridlines>
     <Column header="Событие">

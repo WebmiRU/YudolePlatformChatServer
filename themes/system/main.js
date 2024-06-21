@@ -1,4 +1,4 @@
-const sse = new EventSource("http://127.0.0.1/events?subscribe[]=event1&subscribe[]=stream/chat/message&channel=stream")
+const sse = new EventSource("http://127.0.0.1/sse/streamer")
 const msgTemplate = document.querySelector("#template-message")
 const messages = document.querySelector("#messages")
 let config = {}
@@ -47,6 +47,7 @@ sse.onmessage = function (event) {
         case "system/channel/config":
             config = msg
             const theme = msg.payload.theme.name
+            console.log('CONFIG', config)
 
             // Перезаписываем динамические стили темы для изменения иконки сообщений и прочих параметров
             style.innerHTML = '';

@@ -2,13 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net"
 	"slices"
 	"sync"
-	"time"
 )
 
 type tcpMessagePayload struct {
@@ -33,7 +31,8 @@ func (m tcpMessageRaw) GetType() string {
 }
 
 type tcpClient struct {
-	conn *net.Conn
+	conn   *net.Conn
+	Events []string
 }
 
 func (c *tcpClient) Send(message any) error {
@@ -46,23 +45,23 @@ func (c *tcpClient) Send(message any) error {
 
 func (c *tcpClient) Drop() error {
 
-	tcpClientsMutex.Lock()
-	tcpEventSubsMutex.Lock()
-
-	delete(tcpClients, c.conn)
-
-	for event, clients := range tcpEventSubs {
-		idx := slices.Index(clients, c)
-
-		if idx == -1 {
-			continue
-		}
-
-		tcpEventSubs[event] = slices.Delete(clients, idx, idx+1)
-	}
-
-	tcpEventSubsMutex.Unlock()
-	tcpClientsMutex.Unlock()
+	//tcpClientsMutex.Lock()
+	//tcpEventSubsMutex.Lock()
+	//
+	//delete(tcpClients, c.conn)
+	//
+	//for event, clients := range tcpEventSubs {
+	//	idx := slices.Index(clients, c)
+	//
+	//	if idx == -1 {
+	//		continue
+	//	}
+	//
+	//	tcpEventSubs[event] = slices.Delete(clients, idx, idx+1)
+	//}
+	//
+	//tcpEventSubsMutex.Unlock()
+	//tcpClientsMutex.Unlock()
 
 	if err := (*c.conn).Close(); err != nil {
 		return err
@@ -72,27 +71,28 @@ func (c *tcpClient) Drop() error {
 }
 
 var tcpClientsMutex sync.Mutex
-var tcpEventSubsMutex sync.Mutex
+
+// var tcpEventSubsMutex sync.Mutex
 var tcpClients = make(map[*net.Conn]*tcpClient)
 var tcpEventSubs = make(map[string][]*tcpClient) // [EventType]TcpClient
 
 func tcpServer() {
-	// Init event subscriptions variable
-	for _, event := range events {
-		tcpEventSubsMutex.Lock()
-		tcpEventSubs[event] = make([]*tcpClient, 0)
-		tcpEventSubsMutex.Unlock()
-	}
+	//// Init event subscriptions variable
+	//for _, event := range events {
+	//	tcpEventSubsMutex.Lock()
+	//	tcpEventSubs[event] = make([]*tcpClient, 0)
+	//	tcpEventSubsMutex.Unlock()
+	//}
 
 	listener, err := net.Listen("tcp", "0.0.0.0:5127")
 
-	go func() {
-		for {
-			time.Sleep(2 * time.Second)
-			//fmt.Println("TCP CLIENTS", tcpClients)
-			//fmt.Println("TCP EVENT SUBS", tcpEventSubs)
-		}
-	}()
+	//go func() {
+	//	for {
+	//		time.Sleep(2 * time.Second)
+	//		//fmt.Println("TCP CLIENTS", tcpClients)
+	//		//fmt.Println("TCP EVENT SUBS", tcpEventSubs)
+	//	}
+	//}()
 
 	if err != nil {
 		log.Fatalln(err)
@@ -115,8 +115,9 @@ func tcpServer() {
 func handleTcpConn(conn net.Conn) {
 	tcpClientsMutex.Lock()
 
-	tcpClients[&conn] = &tcpClient{
-		conn: &conn,
+	client := &tcpClient{
+		conn:   &conn,
+		Events: make([]string, 0),
 	}
 
 	tcpClientsMutex.Unlock()
@@ -140,10 +141,10 @@ loop:
 			}
 		}
 
-		if !slices.Contains(events, msg.Type) {
-			log.Println("Unknown type for subscribe:", msg.Type)
-			continue
-		}
+		//if !slices.Contains(events, msg.Type) {
+		//	log.Println("Unknown type for subscribe:", msg.Type)
+		//	continue
+		//}
 
 		//// @TODO for testing
 		//for _, v := range sseEventSubs[msg.Type] {
@@ -165,16 +166,10 @@ loop:
 			}
 
 			for _, event := range payload {
-				if !slices.Contains(events, event) {
-					fmt.Println("UNKNOWN EVENT", event)
-					continue
+				if !slices.Contains(client.Events, event) {
+					client.Events = append(client.Events, event)
 				}
 
-				tcpEventSubsMutex.Lock()
-				if !slices.Contains(tcpEventSubs[event], tcpClients[&conn]) {
-					tcpEventSubs[event] = append(tcpEventSubs[event], tcpClients[&conn])
-				}
-				tcpEventSubsMutex.Unlock()
 			}
 
 		case "event/unsubscribe":
@@ -182,36 +177,14 @@ loop:
 			json.Unmarshal(msg.Payload, &payload)
 
 			for _, event := range payload {
-				if !slices.Contains(events, event) {
-					log.Println("UNKNOWN EVENT", event)
-					continue
+				if slices.Contains(client.Events, event) {
+					idx := slices.Index(client.Events, event)
+					client.Events = slices.Delete(client.Events, idx, idx+1)
 				}
-
-				tcpEventSubsMutex.Lock()
-				idx := slices.Index(tcpEventSubs[event], tcpClients[&conn])
-
-				if idx == -1 {
-					continue
-				}
-
-				tcpEventSubs[event] = slices.Delete(tcpEventSubs[event], idx, idx+1)
-				tcpEventSubsMutex.Unlock()
 			}
 		}
 
 		broadcast(msg)
-
-		//tcpEventSubsMutex.Lock()
-		//for _, client := range tcpEventSubs[msg.Type] {
-		//	if err := client.Send(msg); err != nil {
-		//		log.Println("Error sending message:", err)
-		//		client.Drop()
-		//		return
-		//	}
-		//}
-		//tcpEventSubsMutex.Unlock()
-
-		//fmt.Println("Received data:", msg)
 	}
 
 	if err := tcpClients[&conn].Drop(); err != nil {

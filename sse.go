@@ -4,6 +4,7 @@ import (
 	"YudoleChatServer/packages/resource"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"slices"
@@ -15,6 +16,7 @@ type sseClient struct {
 	R       *http.Request
 	Chan    *chan any
 	Channel string
+	Events  []string
 }
 
 func (c *sseClient) Send(message any) error {
@@ -28,17 +30,17 @@ func (c *sseClient) Drop() error {
 	sseClients = slices.Delete(sseClients, idx, idx+1)
 	sseClientsMutex.Unlock()
 
-	sseEventSubsMutex.Lock()
-	for event, clients := range sseEventSubs {
-		idx := slices.Index(clients, c)
-
-		if idx == -1 {
-			continue
-		}
-
-		sseEventSubs[event] = slices.Delete(clients, idx, idx+1)
-	}
-	sseEventSubsMutex.Unlock()
+	//sseEventSubsMutex.Lock()
+	//for event, clients := range sseEventSubs {
+	//	idx := slices.Index(clients, c)
+	//
+	//	if idx == -1 {
+	//		continue
+	//	}
+	//
+	//	sseEventSubs[event] = slices.Delete(clients, idx, idx+1)
+	//}
+	//sseEventSubsMutex.Unlock()
 
 	return nil
 }
@@ -56,38 +58,26 @@ func (c *sseClient) SendConfig() error {
 }
 
 var sseClientsMutex sync.Mutex
-var sseEventSubsMutex sync.Mutex
-
-// var sseClients = make(map[*http.ResponseWriter]*sseClient)
 var sseClients = make([]*sseClient, 0)
-var sseEventSubs = make(map[string][]*sseClient)
 var sseChan = make(chan Message)
 
-func eventsHandler(w http.ResponseWriter, r *http.Request) {
+func sseChannelGet(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Content-Type", "text/event-stream")
 
+	vars := mux.Vars(r)
+	channel := vars["channel"]
 	ch := make(chan any)
+
 	client := &sseClient{
 		W:       &w,
 		R:       r,
 		Chan:    &ch,
-		Channel: r.URL.Query().Get("channel"),
+		Channel: channel,
+		Events:  config.Channels[channel].Events,
 	}
-
-	subscribe := r.URL.Query()["subscribe[]"]
-
-	sseEventSubsMutex.Lock()
-	for _, event := range subscribe {
-		if slices.Contains(events, event) {
-			sseEventSubs[event] = append(sseEventSubs[event], client)
-		} else {
-			log.Println("Unknown event type:", event)
-		}
-	}
-	sseEventSubsMutex.Unlock()
 
 	sseClientsMutex.Lock()
 	sseClients = append(sseClients, client)
@@ -123,15 +113,9 @@ loop:
 func apiEventsHandlerGet(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Cache-Control", "no-cache")
-	//w.Header().Set("Connection", "keep-alive")
-	//w.Header().Set("Content-Type", "text/event-stream")
 
 	msg, _ := json.Marshal(resource.EventIndex{Payload: events})
 	w.Write(msg)
-
-	//if _, err := fmt.Fprint(w, msg); err != nil {
-	//	log.Println(err)
-	//}
 
 	w.(http.Flusher).Flush()
 }

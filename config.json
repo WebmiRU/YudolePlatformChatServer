@@ -11,7 +11,11 @@
   "channels": {
     "stream": {
       "title": "Канал для зрителей",
-      "events": null,
+      "events": [
+        "event/unsubscribe",
+        "stream/chat/private_message",
+        "api/modules/update/index"
+      ],
       "service_icons": {
         "goodgame": "/resource/module/client2/img/twitch_1.png",
         "service_1": "url101",
@@ -138,14 +142,16 @@
       "title": "Канал для стримера",
       "events": [
         "event/subscribe",
+        "event/unsubscribe",
         "stream/chat/message",
+        "stream/chat/private_message",
         "api/modules/update/index"
       ],
       "service_icons": {
         "twitch": "/resource/module/twitch_client/img/twitch_2.png"
       },
       "theme": {
-        "name": "system2",
+        "name": "system",
         "config": {
           "system": {
             "title": "System theme",

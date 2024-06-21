@@ -181,7 +181,7 @@ func httpServer() {
 	router.HandleFunc("/chat/{channel}/", httpChatChannelHandler).Methods("GET")
 	router.HandleFunc("/chat/{channel}/{path:.*}", httpChatChannelHandler).Methods("GET")
 	router.HandleFunc("/chat2/{channel}", httpChat)
-	router.HandleFunc("/events", eventsHandler)
+	router.HandleFunc("/sse/{channel}", sseChannelGet).Methods("GET")
 
 	// API
 	router.HandleFunc("/api/events", apiEventsHandlerGet).Methods("GET")

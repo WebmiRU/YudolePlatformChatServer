@@ -120,6 +120,8 @@ func handleTcpConn(conn net.Conn) {
 		Events: make([]string, 0),
 	}
 
+	tcpClients[&conn] = client
+
 	tcpClientsMutex.Unlock()
 
 loop:

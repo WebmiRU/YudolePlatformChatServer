@@ -304,6 +304,10 @@ func channelsPageHandler(w http.ResponseWriter, r *http.Request) {
 		os.WriteFile("./config.json", cfg, 0666)
 
 		for _, client := range sseClients {
+			if client.Channel == id {
+				client.Events = ch.Payload.Events
+			}
+
 			if err := client.SendConfig(); err != nil {
 				log.Println(err)
 			}

@@ -36,8 +36,8 @@ var themes = make(map[string]*theme.Theme)
 var services []string
 var resources map[string][]string
 var events = []string{
-	"event/subscribe",
-	"event/unsubscribe",
+	//"event/subscribe",
+	//"event/unsubscribe",
 	"stream/chat/message",
 	"stream/chat/private_message",
 	"api/modules/update/index",

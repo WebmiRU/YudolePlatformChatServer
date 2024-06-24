@@ -35,7 +35,7 @@ export default {
 
   <Tabs v-if="model?.payload" v-model="model.payload"/>
     <div class="field gap-1 mt-5 mb-3">
-        <Button label="Save" severity="success" @click="save($route.params.id, this.model)"/>
+        <Button label="Save" severity="success" @click="save($route.params.id, model)"/>
     </div>
 </template>
 

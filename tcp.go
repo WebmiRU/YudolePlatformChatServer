@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -106,7 +107,7 @@ func tcpServer() {
 			continue
 		}
 
-		log.Println("TCP client connected:", conn.RemoteAddr().String())
+		fmt.Println("TCP client connected:", conn.RemoteAddr().String())
 
 		go handleTcpConn(conn)
 	}

@@ -125,16 +125,23 @@ func (m *Module) StopWait() (int, error) {
 
 func (m *Module) RestartWait() (int, error) {
 	exitCode := 0
+	//var _err error = nil
 
-	if exCode, err := m.StopWait(); err != nil {
-		exitCode = exCode
-		return exCode, err
+	//if exCode, err := m.StopWait(); err != nil {
+	if _, err := m.StopWait(); err != nil {
+		//fmt.Println("STOP ERR")
+		//exitCode = exCode
+		//return exCode, err
+		//_err = err
 	}
 
 	if err := m.Start(); err != nil {
-		return 0, err
+		//fmt.Println("START ERR")
+		//return 0, err
+		//_err = err
 	}
 
+	//return exitCode, _err
 	return exitCode, nil
 }
 

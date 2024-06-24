@@ -42,9 +42,6 @@ var events = []string{
 	"stream/chat/private_message",
 	"api/modules/update/index",
 } // All known events
-//var channels = []string{"event/subscribe", "event/unsubscribe", "stream/chat/message", "stream/chat/private_message"} // All known events
-//var eventSubs = make(map[string][]*IClient)
-//var eventSubsMutex sync.Mutex
 
 func broadcast(message IMessage) {
 	//fmt.Println("BROADCAST", message.GetType(), sseClients)

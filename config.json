@@ -148,7 +148,7 @@
         "api/modules/update/index"
       ],
       "service_icons": {
-        "twitch": "/resource/module/twitch_client/img/twitch_2.png"
+        "twitch": "/resource/module/twitch_client/img/twitch_1.png"
       },
       "theme": {
         "name": "system",

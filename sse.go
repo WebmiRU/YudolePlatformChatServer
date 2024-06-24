@@ -70,13 +70,24 @@ func sseChannelGet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	channel := vars["channel"]
 	ch := make(chan any)
+	var events []string
+
+	if channel == "system" {
+		events = []string{
+			"event/unsubscribe",
+			"stream/chat/private_message",
+			"api/modules/update/index",
+		}
+	} else {
+		events = config.Channels[channel].Events
+	}
 
 	client := &sseClient{
 		W:       &w,
 		R:       r,
 		Chan:    &ch,
 		Channel: channel,
-		Events:  config.Channels[channel].Events,
+		Events:  events,
 	}
 
 	sseClientsMutex.Lock()

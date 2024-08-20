@@ -17,12 +17,12 @@
         "api/modules/update/index"
       ],
       "service_icons": {
-        "goodgame": "/resource/module/client2/img/twitch_1.png",
+        "goodgame": "/resource/module/goodgame_client/img/icon_1.png",
         "service_1": "url101",
         "twitch": "/resource/module/twitch_client/img/twitch_1.png"
       },
       "theme": {
-        "name": "system",
+        "name": "system2",
         "config": {
           "system": {
             "title": "System theme",
@@ -148,6 +148,7 @@
         "api/modules/update/index"
       ],
       "service_icons": {
+        "goodgame": "/resource/module/twitch_client/img/twitch_2.png",
         "twitch": "/resource/module/twitch_client/img/twitch_1.png"
       },
       "theme": {
@@ -198,66 +199,6 @@
                     "placeholder": "",
                     "validation": "",
                     "value": true,
-                    "items": null
-                  }
-                }
-              }
-            }
-          },
-          "system2": {
-            "title": "System theme 2",
-            "tabs": {
-              "animation": {
-                "title": "Анимация",
-                "fields": {
-                  "animation_time": {
-                    "type": "integer",
-                    "label": "Время анимации показа сообщения",
-                    "description": "Время в миллисекундах. 1 секунда = 1000 миллисекунд",
-                    "placeholder": "1000",
-                    "validation": "",
-                    "value": 100,
-                    "items": null
-                  },
-                  "type": {
-                    "type": "select",
-                    "label": "Тип анимации",
-                    "description": "",
-                    "placeholder": "",
-                    "validation": "",
-                    "value": "from_right",
-                    "items": [
-                      {
-                        "title": "Появление сообщений слева",
-                        "value": "from_left"
-                      },
-                      {
-                        "title": "Появление сообщений справа",
-                        "value": "from_right"
-                      }
-                    ]
-                  }
-                }
-              },
-              "tab2": {
-                "title": "Вкладка #2",
-                "fields": {
-                  "login": {
-                    "type": "string",
-                    "label": "Login 2",
-                    "description": "",
-                    "placeholder": "Login 2",
-                    "validation": "",
-                    "value": "Test 1",
-                    "items": null
-                  },
-                  "password": {
-                    "type": "string",
-                    "label": "Password 2",
-                    "description": "",
-                    "placeholder": "Password 2",
-                    "validation": "",
-                    "value": "Test 2",
                     "items": null
                   }
                 }

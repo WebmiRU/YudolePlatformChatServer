@@ -68,7 +68,8 @@ sse.onmessage = function (event) {
 
         case "stream/chat/message":
             // @TODO Заменить картинку на DIV + URL + переменную в CSS
-            const template = document.querySelector("#template-message")
+            const template = document.querySelector("#template-message").cloneNode(true)
+
             // template.content.querySelector('.service-icon').setAttribute('src', config.payload.service_icons[msg.service])
             template.content.querySelector('.service-icon').classList.add(msg.service)
             template.content.querySelector('.time').innerHTML = date.toTimeString().split(' ')[0]

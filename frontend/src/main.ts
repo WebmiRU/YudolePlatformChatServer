@@ -39,6 +39,8 @@ import ThemeIndex from './pages/themes/Index.vue'
 import ThemePage from './pages/themes/Page.vue'
 import ChannelIndex from './pages/channels/Index.vue'
 import ChannelPage from './pages/channels/Page.vue'
+import ResourcesImagesIndex from './pages/resources/images/Index.vue'
+import ResourcesAudioIndex from './pages/resources/audio/Index.vue'
 
 const routes = [
     { path: '/', name: 'index', component: Index },
@@ -48,6 +50,8 @@ const routes = [
     { path: '/themes/:id', name: 'themes.page', component: ThemePage },
     { path: '/channels', name: 'channels.index', component: ChannelIndex },
     { path: '/channels/:id', name: 'channels.page', component: ChannelPage },
+    { path: '/resources/images', name: 'resources.images', component: ResourcesImagesIndex },
+    { path: '/resources/audio', name: 'resources.audio', component: ResourcesAudioIndex },
 ]
 
 const router = createRouter({

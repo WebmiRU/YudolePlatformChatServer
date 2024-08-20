@@ -34,6 +34,26 @@ const items = ref([
       router.push({name: 'channels.index'})
     }
   },
+  {
+    label: 'Ресурсы',
+    icon: 'pi pi-search',
+    items: [
+      {
+        label: 'Изображения',
+        icon: 'pi pi-bolt',
+        command: () => {
+          router.push({name: 'resources.images'})
+        }
+      },
+      {
+        label: 'Аудио',
+        icon: 'pi pi-server',
+        command: () => {
+          router.push({name: 'resources.audio'})
+        }
+      }
+    ]
+  },
   // {
   //   label: 'Features',
   //   icon: 'pi pi-star'

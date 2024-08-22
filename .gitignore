@@ -2,3 +2,4 @@
 node_modules
 modules/**
 !modules/build.sh
+chat_server.exe

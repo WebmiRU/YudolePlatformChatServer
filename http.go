@@ -2,6 +2,8 @@ package main
 
 import (
 	"YudoleChatServer/packages/resource"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -12,6 +14,87 @@ import (
 	"path/filepath"
 	"strings"
 )
+
+func response(w http.ResponseWriter, t string, data any) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
+	resp1 := resource.Response{
+		Type:    t,
+		Payload: data,
+	}
+
+	resp, _ := json.Marshal(resp1)
+	defer w.Write(resp)
+}
+
+func resourcesAudioUpload(w http.ResponseWriter, r *http.Request) {
+	defer response(w, "resources/audio", &config.Resources.Audio)
+
+	httpFile, handler, err := r.FormFile("file")
+	if err != nil {
+		fmt.Println("Error retrieving the File", err)
+		return
+	}
+
+	tmpFile, err := os.CreateTemp("", "tmp_")
+
+	if err != nil {
+		log.Println("Error creating a temporary file", err)
+		return
+	}
+
+	io.Copy(tmpFile, httpFile)
+
+	tmpFile.Close()
+
+	file, err := os.Open(tmpFile.Name())
+	if err != nil {
+		log.Println("Error opening the file", err)
+	}
+
+	s256 := sha256.New()
+	io.Copy(s256, file)
+	sha256String := hex.EncodeToString(s256.Sum(nil))
+	file.Close()
+
+	dstFilePath := "data/resources/audio/" + sha256String
+	dstFile, err := os.Create(dstFilePath)
+	if err != nil {
+		log.Println("Error creating the file", err)
+		return
+	}
+
+	file2, _ := os.Open(tmpFile.Name())
+
+	io.Copy(dstFile, file2)
+	dstFile.Close()
+
+	buff := make([]byte, 100)
+	file2.ReadAt(buff, 0)
+	mimeType := http.DetectContentType(buff)
+
+	file2.Close()
+
+	config.Resources.Audio[sha256String] = Resource{
+		Name:     handler.Filename,
+		Sha256:   sha256String,
+		Size:     handler.Size,
+		MimeType: mimeType,
+	}
+
+	config.Save()
+}
+
+func resourcesAudio(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	model := resource.ResourceIndex{resources}
+	resp, _ := json.Marshal(model)
+
+	w.Write(resp)
+}
 
 func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -196,6 +279,8 @@ func httpServer() {
 	router.HandleFunc("/api/modules/{id}/autostart/{state:[0,1]}", modulesIdSetAutostartHandler)
 	router.HandleFunc("/api/resources", resourcesIndexHandler)
 	router.HandleFunc("/resource/{type:module|theme}/{id}/{path:.*}", httpResource).Methods("GET")
+	router.HandleFunc("/api/resources/audio/upload", resourcesAudioUpload)
+	router.HandleFunc("/api/resources/audio", resourcesAudio)
 	http.Handle("/", router)
 
 	fmt.Println("Server starting...")

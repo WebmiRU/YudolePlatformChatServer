@@ -19,49 +19,30 @@ export default {
   async mounted() {
     store.breadcrumbs = [
       {icon: 'pi pi-home', route: {name: 'index'}},
-      {label: 'Modules', route: {name: 'modules.index'}}
+      {label: 'Ресурсы'},
+      {label: 'Аудио', route: {name: 'resources.audio'}},
     ]
 
     this.model = await APIService.modulesIndexGet()
-
-    // this.updateInterval = setInterval(async () => {
-    //   this.model = await APIService.modulesIndexGet()
-    // }, 2000)
-
-    this.sse.onmessage = async (ev) => {
-      // console.log('MODULE EVENT', ev)
-      const message = JSON.parse(ev.data)
-      console.log('MODULE EVENT', message)
-
-      if (message.type === 'api/modules/update/index') {
-        this.model = message
-      }
-    }
-
-    // console.log(this.sse)
   },
   unmounted() {
-    // clearInterval(this.updateInterval)
-    this.sse.onmessage = null
+
   },
   methods: {
-    moduleStateChange(id, state) {
-      APIService.putModulesIdSetState(id, state ? 1 : 0)
-    },
-    async moduleStart(id: string) {
-      // this.model = await APIService.modulesIdStart(id)
-      await APIService.modulesIdStart(id)
-    },
-    async moduleStop(id: string) {
-      // this.model = await APIService.modulesIdStop(id)
-      await APIService.modulesIdStop(id)
-    },
+
   }
 }
 </script>
 
 <template>
-  <h1>Modules list</h1>
+  <h1>Ресурсы / Аудио</h1>
+
+  <form method="post" enctype="multipart/form-data" action="/api/resources/audio/upload">
+    <input type="file" name="file" accept="audio/*" />
+    <br/>
+    <br/>
+    <button>Загрузить</button>
+  </form>
 
   <br/>
   <br/>

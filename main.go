@@ -3,7 +3,6 @@ package main
 import (
 	"YudoleChatServer/packages/module"
 	"YudoleChatServer/packages/theme"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -73,16 +72,18 @@ func Init() {
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
 	go shutdown()
 
-	// Loading local config file
-	configFile, err := os.Open("config.json")
+	//// Loading local config file
+	//configFile, err := os.Open("config.json")
+	//
+	//if err != nil {
+	//	panic("Error while reading \"config.json\" file")
+	//}
+	//
+	//if err := json.NewDecoder(configFile).Decode(&config); err != nil {
+	//	panic("Error while parsing \"config.json\" file")
+	//}
 
-	if err != nil {
-		panic("Error while reading \"config.json\" file")
-	}
-
-	if err := json.NewDecoder(configFile).Decode(&config); err != nil {
-		panic("Error while parsing \"config.json\" file")
-	}
+	config.Load()
 
 	// Run TCP server
 	go tcpServer()

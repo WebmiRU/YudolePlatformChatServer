@@ -208,5 +208,40 @@
         }
       }
     }
+  },
+  "resources": {
+    "Audio": {
+      "2495edf23e15da1782a1d9e5ce36ac129dadd93372667139395d231c7a2850fb": {
+        "name": "American Cowboys.mp3",
+        "sha256": "2495edf23e15da1782a1d9e5ce36ac129dadd93372667139395d231c7a2850fb",
+        "size": 2975960,
+        "mime_type": "audio/mpeg"
+      },
+      "44c4c29bbf76d74ec7dac2878f5911d29f39a17fa04645b55bc0eef47bf66e20": {
+        "name": "09 Frank Klepacki - Drone.mp3",
+        "sha256": "44c4c29bbf76d74ec7dac2878f5911d29f39a17fa04645b55bc0eef47bf66e20",
+        "size": 4323346,
+        "mime_type": "audio/mpeg"
+      },
+      "91fd299ea16942929a326b06b41922b80de21a08babf8fb0acddc31accf718df": {
+        "name": "East Moves West.mp3",
+        "sha256": "91fd299ea16942929a326b06b41922b80de21a08babf8fb0acddc31accf718df",
+        "size": 3684836,
+        "mime_type": "audio/mpeg"
+      },
+      "af440245c431a35a3b7c706b5abd593aa16c0ad4c834021a2c7fc4231adb2f94": {
+        "name": "For Mother Russia.mp3",
+        "sha256": "af440245c431a35a3b7c706b5abd593aa16c0ad4c834021a2c7fc4231adb2f94",
+        "size": 4905272,
+        "mime_type": "audio/mpeg"
+      },
+      "f36e785de8a0fb630e9f04b292d257fc04e178c58bc2c4661882765783a2419c": {
+        "name": "The War Machine Heads West.mp3",
+        "sha256": "f36e785de8a0fb630e9f04b292d257fc04e178c58bc2c4661882765783a2419c",
+        "size": 4974176,
+        "mime_type": "audio/mpeg"
+      }
+    },
+    "Images": {}
   }
 }

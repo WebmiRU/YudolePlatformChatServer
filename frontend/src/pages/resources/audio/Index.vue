@@ -30,9 +30,7 @@ export default {
   unmounted() {
 
   },
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 
@@ -40,7 +38,7 @@ export default {
   <h1>Ресурсы / Аудио</h1>
 
   <form method="post" enctype="multipart/form-data" action="/api/resources/audio/upload">
-    <input type="file" name="file" accept="audio/*" />
+    <input type="file" name="file" accept="audio/*"/>
     <br/>
     <br/>
     <button>Загрузить</button>
@@ -50,36 +48,20 @@ export default {
   <br/>
 
   <DataTable :value="model.payload" tableStyle="min-width: 50rem">
-    <Column field="name" header="Name"></Column>
+    <Column field="name" header="Имя"/>
+    <Column field="source" header="Источник"/>
 
-    <Column header="Autostart">
+    <Column header="Размер">
       <template #body="row">
-        <InputSwitch v-model="model.payload[row.index].autostart"
-                     @change="moduleStateChange(row.index, model.payload[row.index].autostart)"/>
+        {{ row.data.size }}
       </template>
     </Column>
 
-    <Column header="State">
+    <Column header="Проигрыватель">
       <template #body="row">
-        <Badge v-if="row.data.proc_state == 'run'" severity="success">Run</Badge>
-        <Badge v-else-if="['stopped', 'failed'].includes(row.data.proc_state)" severity="danger">Stopped</Badge>
-      </template>
-    </Column>
-
-    <Column header="Start/Stop">
-      <template #body="row">
-        <Button v-if="row.data.proc_state == 'run'" @click="moduleStop(row.index)" severity="danger">Stop</Button>
-        <Button v-if="['stopped', 'failed'].includes(row.data.proc_state)" @click="moduleStart(row.index)"
-                severity="success">Start
-        </Button>
-      </template>
-    </Column>
-
-    <Column header="Config">
-      <template #body="row">
-        <RouterLink :to="{name: 'modules.id', params: {id: row.index}}">
-          <Button label="Config" severity="secondary"/>
-        </RouterLink>
+        <audio controls>
+          <source :src="'/api/resources/audio/' + row.data.sha256" type="audio/mpeg"/>
+        </audio>
       </template>
     </Column>
   </DataTable>

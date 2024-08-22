@@ -38,13 +38,12 @@ func responseFile(w http.ResponseWriter, res resource.IResource) {
 		return
 	}
 
-	fBytes, _ := io.ReadAll(f)
-	f.Close()
-
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", res.GetMimeType())
 	w.Header().Set("Content-Length", string(res.GetSize()))
-	w.Write(fBytes)
+	w.WriteHeader(http.StatusOK)
+
+	io.Copy(w, f)
+	f.Close()
 }
 
 func resourcesAudioIndex(w http.ResponseWriter, r *http.Request) {

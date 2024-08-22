@@ -18,7 +18,7 @@ import (
 	"strings"
 )
 
-func response(w http.ResponseWriter, t string, data any) {
+func responseJson(w http.ResponseWriter, t string, data any) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
@@ -31,12 +31,40 @@ func response(w http.ResponseWriter, t string, data any) {
 	defer w.Write(resp)
 }
 
+func responseFile(w http.ResponseWriter, res resource.IResource) {
+	f, err := os.Open(res.GetPath())
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	fBytes, _ := io.ReadAll(f)
+	f.Close()
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", res.GetMimeType())
+	w.Header().Set("Content-Length", string(res.GetSize()))
+	w.Write(fBytes)
+}
+
+func resourcesAudioIndex(w http.ResponseWriter, r *http.Request) {
+	responseJson(w, "resources/audio", resources.Audio)
+}
+
 func resourcesAudioGet(w http.ResponseWriter, r *http.Request) {
-	response(w, "resources/audio", resources.Audio)
+	hash := mux.Vars(r)["sha256"]
+	res := resources.Audio[hash]
+
+	if _, ok := resources.Audio[hash]; !ok {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	responseFile(w, &res)
 }
 
 func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
-	defer response(w, "resources/audio", &config.Resources.Audio)
+	defer responseJson(w, "resources/audio", &config.Resources.Audio)
 
 	httpFile, handler, err := r.FormFile("file")
 	if err != nil {
@@ -93,88 +121,52 @@ func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
 	config.Save()
 }
 
+func resourcesImagesIndex(w http.ResponseWriter, r *http.Request) {
+	responseJson(w, "resources/images", resources.Images)
+}
+
 func resourcesImagesGet(w http.ResponseWriter, r *http.Request) {
-	response(w, "resources/images", resources.Images)
-}
+	hash := mux.Vars(r)["sha256"]
+	res := resources.Images[hash]
 
-func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	// @TODO
-	//model := resource.ResourceIndex{resources}
-	//resp, _ := json.Marshal(model)
-	//
-	//w.Write(resp)
-}
-
-func httpResource(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	var path string
-
-	switch vars["type"] {
-	case "module":
-		allow := false
-
-		//if _, ok := modules[vars["id"]]; ok {
-		//	//for _, res := range modules[vars["id"]].Resources {
-		//	//	if res.Path == vars["path"] {
-		//	//		allow = true
-		//	//	}
-		//	//}
-		//}
-
-		if !allow {
-			w.WriteHeader(404)
-			return
-		}
-
-		path = currentDir + "/modules/" + vars["id"] + "/resources/" + vars["path"]
-	case "theme":
-		path = currentDir + "/themes/" + vars["id"] + "/resources/" + vars["path"]
-	}
-
-	fmt.Println(path)
-
-	f, err := os.Open(path)
-	defer f.Close()
-
-	if err != nil {
-		w.WriteHeader(500)
-		log.Println("Error opening file", err)
+	if _, ok := resources.Images[hash]; !ok {
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	w.WriteHeader(200)
-	if _, err := io.Copy(w, f); err != nil {
-		log.Println("Error copying file", err)
-		return
-	}
-	//w.Header().Set("Content-Type", "image/*")
-	//w.Header().Set("Content-Length", len)
+	responseFile(w, &res)
 }
 
-//func httpFile(w http.ResponseWriter, r *http.Request) {
-//	vars := mux.Vars(r)
+//func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
+//	w.Header().Set("Content-Type", "application/json")
+//	w.Header().Set("Access-Control-Allow-Origin", "*")
 //
+//	// @TODO
+//	//model := resource.ResourceIndex{resources}
+//	//resp, _ := json.Marshal(model)
+//	//
+//	//w.Write(resp)
+//}
+//
+//func httpResource(w http.ResponseWriter, r *http.Request) {
+//	vars := mux.Vars(r)
 //	var path string
 //
 //	switch vars["type"] {
 //	case "module":
 //		allow := false
 //
-//	loop:
-//		for _, resType := range resources {
-//			for _, resource := range resType {
-//				if resource == vars["path"] {
-//					allow = true
-//					break loop
-//				}
-//			}
-//		}
+//		//if _, ok := modules[vars["id"]]; ok {
+//		//	//for _, res := range modules[vars["id"]].Resources {
+//		//	//	if res.Path == vars["path"] {
+//		//	//		allow = true
+//		//	//	}
+//		//	//}
+//		//}
 //
 //		if !allow {
 //			w.WriteHeader(404)
+//			return
 //		}
 //
 //		path = currentDir + "/modules/" + vars["id"] + "/resources/" + vars["path"]
@@ -198,8 +190,6 @@ func httpResource(w http.ResponseWriter, r *http.Request) {
 //		log.Println("Error copying file", err)
 //		return
 //	}
-//	//w.Header().Set("Content-Type", "image/*")
-//	//w.Header().Set("Content-Length", len)
 //}
 
 func httpChat(w http.ResponseWriter, r *http.Request) {
@@ -279,15 +269,17 @@ func httpServer() {
 	router.HandleFunc("/api/modules/{id}/start", modulesIdStartHandler)
 	router.HandleFunc("/api/modules/{id}/stop", modulesIdStopHandler)
 	router.HandleFunc("/api/modules/{id}/autostart/{state:[0,1]}", modulesIdSetAutostartHandler)
-	router.HandleFunc("/api/resources", resourcesIndexHandler)
-	router.HandleFunc("/resource/{type:module|theme}/{id}/{path:.*}", httpResource).Methods("GET")
+	//router.HandleFunc("/api/resources", resourcesIndexHandler)
+	//router.HandleFunc("/resource/{type:module|theme}/{id}/{path:.*}", httpResource).Methods("GET")
 
 	// Audio resources
-	router.HandleFunc("/api/resources/audio", resourcesAudioGet).Methods("GET")
+	router.HandleFunc("/api/resources/audio", resourcesAudioIndex).Methods("GET")
+	router.HandleFunc("/api/resources/audio/{sha256}", resourcesAudioGet).Methods("GET")
 	router.HandleFunc("/api/resources/audio", resourcesAudioPost).Methods("POST")
 
 	// Image resources
-	router.HandleFunc("/api/resources/images", resourcesImagesGet).Methods("GET")
+	router.HandleFunc("/api/resources/images", resourcesImagesIndex).Methods("GET")
+	router.HandleFunc("/api/resources/images/{sha256}", resourcesImagesGet).Methods("GET")
 
 	http.Handle("/", router)
 

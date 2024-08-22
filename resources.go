@@ -56,7 +56,7 @@ func (r *Resources) LoadAudio() {
 
 	for _, v := range config.Resources.Audio {
 		v.Source = "upload"
-		v.Path = cd + ps + "data" + ps + "resources" + ps + "images" + ps + v.Sha256
+		v.Path = cd + ps + "data" + ps + "resources" + ps + "audio" + ps + v.Sha256
 		r.Audio[v.Sha256] = v
 	}
 

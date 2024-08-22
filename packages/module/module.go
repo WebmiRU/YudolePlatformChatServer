@@ -26,7 +26,7 @@ type Module struct {
 	Tabs      map[string]tab.Tab `json:"tabs"`
 	Exec      *exec.Cmd          `json:"-"`
 	State     string             `json:"proc_state"`
-	Resources []Resource         `json:"resources"`
+	Resources Resource           `json:"resources"`
 
 	dir        string `json:"dir"`
 	isRunning  bool

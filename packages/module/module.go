@@ -12,8 +12,8 @@ import (
 //github.com/WebmiRU/YudolePlatformPackages/module
 
 type Resource struct {
-	Path string `json:"path"`
-	Type string `json:"type"`
+	Audio  []string `json:"audio"`
+	Images []string `json:"images"`
 }
 
 type Module struct {

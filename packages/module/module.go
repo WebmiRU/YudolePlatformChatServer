@@ -11,7 +11,7 @@ import (
 
 //github.com/WebmiRU/YudolePlatformPackages/module
 
-type Resource struct {
+type Resources struct {
 	Audio  []string `json:"audio"`
 	Images []string `json:"images"`
 }
@@ -26,7 +26,7 @@ type Module struct {
 	Tabs      map[string]tab.Tab `json:"tabs"`
 	Exec      *exec.Cmd          `json:"-"`
 	State     string             `json:"proc_state"`
-	Resources Resource           `json:"resources"`
+	Resources Resources          `json:"resources"`
 
 	dir        string `json:"dir"`
 	isRunning  bool

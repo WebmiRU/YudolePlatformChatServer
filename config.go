@@ -39,6 +39,8 @@ func (config *Config) Load() {
 	if err := json.NewDecoder(configFile).Decode(config); err != nil {
 		panic("Error while parsing \"config.json\" file")
 	}
+
+	//resources.Load()
 }
 
 func (config *Config) Save() {
@@ -48,4 +50,6 @@ func (config *Config) Save() {
 	if err != nil {
 		log.Println("Error while writing \"config.json\" file")
 	}
+
+	//resources.Load()
 }

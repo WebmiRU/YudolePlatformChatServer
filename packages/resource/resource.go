@@ -5,7 +5,8 @@ type Audio struct {
 	Size     int64  `json:"size"`
 	Sha256   string `json:"sha256"`
 	MimeType string `json:"mime_type"`
-	//Path     string `json:"path"`
+	Source   string `json:"source"`
+	Path     string `json:"-"`
 }
 
 type Image struct {
@@ -15,6 +16,8 @@ type Image struct {
 	MimeType string `json:"mime_type"`
 	Width    int    `json:"width"`
 	Height   int    `json:"height"`
+	Source   string `json:"source"`
+	Path     string `json:"-"`
 }
 
 type Payload struct {

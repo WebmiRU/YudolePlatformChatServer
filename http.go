@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"image"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
@@ -32,127 +31,8 @@ func response(w http.ResponseWriter, t string, data any) {
 	defer w.Write(resp)
 }
 
-func FileGetResourceAudio(path string) (*resource.Audio, error) {
-	file, err := os.Open(path)
-
-	if err != nil {
-		return nil, err
-	}
-
-	s256 := sha256.New()
-	io.Copy(s256, file)
-	sha256String := hex.EncodeToString(s256.Sum(nil))
-
-	stat, _ := file.Stat()
-	buff := make([]byte, 100)
-	file.ReadAt(buff, 0)
-	mimeType := http.DetectContentType(buff)
-
-	result := resource.Audio{
-		Name:     stat.Name(),
-		Size:     stat.Size(),
-		Sha256:   sha256String,
-		MimeType: mimeType,
-	}
-
-	file.Close()
-
-	return &result, nil
-}
-
-func FileGetResourceImage(path string) (*resource.Image, error) {
-	file, err := os.Open(path)
-
-	if err != nil {
-		return nil, err
-	}
-
-	s256 := sha256.New()
-	io.Copy(s256, file)
-	sha256String := hex.EncodeToString(s256.Sum(nil))
-
-	stat, _ := file.Stat()
-	buff := make([]byte, 100)
-	file.ReadAt(buff, 0)
-
-	name := stat.Name()
-	size := stat.Size()
-	mimeType := http.DetectContentType(buff)
-
-	file.Close()
-
-	imageFile, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	im, _, err := image.DecodeConfig(imageFile)
-
-	width := im.Width
-	height := im.Height
-
-	imageFile.Close()
-
-	result := resource.Image{
-		Name:     name,
-		Size:     size,
-		Sha256:   sha256String,
-		MimeType: mimeType,
-		Width:    width,
-		Height:   height,
-	}
-
-	return &result, nil
-}
-
-func resourcesAudioPayload() map[string]resource.Audio {
-	payload := make(map[string]resource.Audio)
-
-	for _, v := range config.Resources.Audio {
-		payload[v.Sha256] = v
-	}
-
-	for _, module := range modules {
-		for _, v := range module.Resources.Audio {
-			res, err := FileGetResourceAudio(module.Dir + "/resources/" + v)
-
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			payload[res.Sha256] = *res
-		}
-	}
-
-	return payload
-}
-
-func resourcesImagesPayload() map[string]resource.Image {
-	payload := make(map[string]resource.Image)
-
-	for _, v := range config.Resources.Images {
-		payload[v.Sha256] = v
-	}
-
-	for _, module := range modules {
-		for _, v := range module.Resources.Images {
-			res, err := FileGetResourceImage(module.Dir + "/resources/" + v)
-
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			payload[res.Sha256] = *res
-		}
-	}
-
-	return payload
-}
-
 func resourcesAudioGet(w http.ResponseWriter, r *http.Request) {
-	response(w, "resources/audio", resourcesAudioPayload())
+	response(w, "resources/audio", resources.Audio)
 }
 
 func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
@@ -214,7 +94,7 @@ func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func resourcesImagesGet(w http.ResponseWriter, r *http.Request) {
-	response(w, "resources/images", resourcesImagesPayload())
+	response(w, "resources/images", resources.Images)
 }
 
 func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -236,13 +116,13 @@ func httpResource(w http.ResponseWriter, r *http.Request) {
 	case "module":
 		allow := false
 
-		if _, ok := modules[vars["id"]]; ok {
-			//for _, res := range modules[vars["id"]].Resources {
-			//	if res.Path == vars["path"] {
-			//		allow = true
-			//	}
-			//}
-		}
+		//if _, ok := modules[vars["id"]]; ok {
+		//	//for _, res := range modules[vars["id"]].Resources {
+		//	//	if res.Path == vars["path"] {
+		//	//		allow = true
+		//	//	}
+		//	//}
+		//}
 
 		if !allow {
 			w.WriteHeader(404)

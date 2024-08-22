@@ -30,24 +30,39 @@ export default {
   unmounted() {
 
   },
-  methods: {}
+  methods: {
+    uploadClick() {
+      this.$refs.file.click()
+    },
+
+    async fileChange() {
+      const fd = new FormData()
+      fd.append('file', this.$refs.file.files[0])
+
+      let response = await fetch('/api/resources/audio', {
+        method: 'POST',
+        body: fd
+      });
+
+      this.$refs.file.value = null
+
+      this.model = await response.json();
+
+    }
+  }
 }
 </script>
 
 <template>
+  <input @change="fileChange" ref="file" type="file" accept="audio/*" style="display: none"/>
+
+  <button @click="uploadClick">Загрузить</button>
   <h1>Ресурсы / Аудио</h1>
 
-  <form method="post" enctype="multipart/form-data" action="/api/resources/audio/upload">
-    <input type="file" name="file" accept="audio/*"/>
-    <br/>
-    <br/>
-    <button>Загрузить</button>
-  </form>
-
   <br/>
   <br/>
 
-  <DataTable :value="model.payload" tableStyle="min-width: 50rem">
+  <DataTable :value="model.payload">
     <Column field="name" header="Имя"/>
     <Column field="source" header="Источник"/>
 
@@ -60,11 +75,10 @@ export default {
     <Column header="Проигрыватель">
       <template #body="row">
         <audio controls>
-          <source :src="'/api/resources/audio/' + row.data.sha256" type="audio/mpeg"/>
+          <source :src="'/api/resources/audio/' + row.data.sha256" :type="row.data.mime_type"/>
         </audio>
       </template>
     </Column>
   </DataTable>
-
 </template>
 

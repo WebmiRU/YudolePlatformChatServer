@@ -63,7 +63,8 @@ func resourcesAudioGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
-	defer responseJson(w, "resources/audio", &config.Resources.Audio)
+	defer responseJson(w, "resources/audio", &resources.Audio)
+	defer resources.Load()
 
 	httpFile, handler, err := r.FormFile("file")
 	if err != nil {
@@ -86,6 +87,8 @@ func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Error opening the file", err)
 	}
+
+	// @TODO Оптимизировать тут код, в частности сделать функцию для получения хеша файлов
 
 	s256 := sha256.New()
 	io.Copy(s256, file)

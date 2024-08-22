@@ -211,17 +211,26 @@
   },
   "resources": {
     "Audio": {
-      "44c4c29bbf76d74ec7dac2878f5911d29f39a17fa04645b55bc0eef47bf66e20": {
-        "name": "09 Frank Klepacki - Drone.mp3",
-        "size": 4323346,
-        "sha256": "44c4c29bbf76d74ec7dac2878f5911d29f39a17fa04645b55bc0eef47bf66e20",
-        "mime_type": "audio/mpeg"
+      "71e927c5ba12f39785834ec6ccba6bda2d7e0c616bfa90be9046bde399ca3f09": {
+        "name": "01 Frank Klepacki - Act On Instinct.mp3",
+        "size": 2735912,
+        "sha256": "71e927c5ba12f39785834ec6ccba6bda2d7e0c616bfa90be9046bde399ca3f09",
+        "mime_type": "audio/mpeg",
+        "source": ""
       },
-      "af440245c431a35a3b7c706b5abd593aa16c0ad4c834021a2c7fc4231adb2f94": {
-        "name": "For Mother Russia.mp3",
-        "size": 4905272,
-        "sha256": "af440245c431a35a3b7c706b5abd593aa16c0ad4c834021a2c7fc4231adb2f94",
-        "mime_type": "audio/mpeg"
+      "a54113ffff87d7cbeaa41cf2ab80736e319d6ef9bbd211a1db6d896cacd6e58e": {
+        "name": "05 Frank Klepacki - We Will Stop Them.mp3",
+        "size": 3005541,
+        "sha256": "a54113ffff87d7cbeaa41cf2ab80736e319d6ef9bbd211a1db6d896cacd6e58e",
+        "mime_type": "audio/mpeg",
+        "source": ""
+      },
+      "b079c91d410c91ba60548055c91115321a7749a9dc70685356ce59b7fb31301c": {
+        "name": "19 Frank Klepacki - To Be Feared.mp3",
+        "size": 2573370,
+        "sha256": "b079c91d410c91ba60548055c91115321a7749a9dc70685356ce59b7fb31301c",
+        "mime_type": "audio/mpeg",
+        "source": ""
       }
     },
     "Images": {}

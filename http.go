@@ -7,6 +7,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"image"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
 	"log"
 	"net/http"
@@ -26,7 +30,6 @@ func response(w http.ResponseWriter, t string, data any) {
 
 	resp, _ := json.Marshal(resp1)
 	defer w.Write(resp)
-	//ress()
 }
 
 func FileGetResourceAudio(path string) (*resource.Audio, error) {
@@ -57,6 +60,51 @@ func FileGetResourceAudio(path string) (*resource.Audio, error) {
 	return &result, nil
 }
 
+func FileGetResourceImage(path string) (*resource.Image, error) {
+	file, err := os.Open(path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	s256 := sha256.New()
+	io.Copy(s256, file)
+	sha256String := hex.EncodeToString(s256.Sum(nil))
+
+	stat, _ := file.Stat()
+	buff := make([]byte, 100)
+	file.ReadAt(buff, 0)
+
+	name := stat.Name()
+	size := stat.Size()
+	mimeType := http.DetectContentType(buff)
+
+	file.Close()
+
+	imageFile, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	im, _, err := image.DecodeConfig(imageFile)
+
+	width := im.Width
+	height := im.Height
+
+	imageFile.Close()
+
+	result := resource.Image{
+		Name:     name,
+		Size:     size,
+		Sha256:   sha256String,
+		MimeType: mimeType,
+		Width:    width,
+		Height:   height,
+	}
+
+	return &result, nil
+}
+
 func resourcesAudioPayload() map[string]resource.Audio {
 	payload := make(map[string]resource.Audio)
 
@@ -80,8 +128,30 @@ func resourcesAudioPayload() map[string]resource.Audio {
 	return payload
 }
 
+func resourcesImagesPayload() map[string]resource.Image {
+	payload := make(map[string]resource.Image)
+
+	for _, v := range config.Resources.Images {
+		payload[v.Sha256] = v
+	}
+
+	for _, module := range modules {
+		for _, v := range module.Resources.Images {
+			res, err := FileGetResourceImage(module.Dir + "/resources/" + v)
+
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			payload[res.Sha256] = *res
+		}
+	}
+
+	return payload
+}
+
 func resourcesAudioGet(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("RAG")
 	response(w, "resources/audio", resourcesAudioPayload())
 }
 
@@ -141,6 +211,10 @@ func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	config.Save()
+}
+
+func resourcesImagesGet(w http.ResponseWriter, r *http.Request) {
+	response(w, "resources/images", resourcesImagesPayload())
 }
 
 func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -328,8 +402,12 @@ func httpServer() {
 	router.HandleFunc("/api/resources", resourcesIndexHandler)
 	router.HandleFunc("/resource/{type:module|theme}/{id}/{path:.*}", httpResource).Methods("GET")
 
-	router.HandleFunc("/api/resources/audio", resourcesAudioPost).Methods("POST")
+	// Audio resources
 	router.HandleFunc("/api/resources/audio", resourcesAudioGet).Methods("GET")
+	router.HandleFunc("/api/resources/audio", resourcesAudioPost).Methods("POST")
+
+	// Image resources
+	router.HandleFunc("/api/resources/images", resourcesImagesGet).Methods("GET")
 
 	http.Handle("/", router)
 

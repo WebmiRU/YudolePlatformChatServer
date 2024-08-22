@@ -8,18 +8,6 @@ import (
 	"os"
 )
 
-type Resource struct {
-	Name     string `json:"name"`
-	Sha256   string `json:"sha256"`
-	Size     int64  `json:"size"`
-	MimeType string `json:"mime_type"`
-}
-
-type Resources struct {
-	Audio  map[string]resource.Audio
-	Images map[string]resource.Image
-}
-
 type Config struct {
 	AutostartModules []string `json:"autostart_modules"`
 

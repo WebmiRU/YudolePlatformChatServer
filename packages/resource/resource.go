@@ -1,8 +1,5 @@
 package resource
 
-type Resource struct {
-}
-
 type Audio struct {
 	Name     string `json:"name"`
 	Size     int64  `json:"size"`

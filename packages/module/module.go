@@ -35,7 +35,7 @@ type Module struct {
 
 func (m *Module) Load(configPath string) error {
 	m.Command = m.Command
-	m.configPath = configPath + string(os.PathSeparator) + "module.json"
+	m.configPath = configPath + "/module.json"
 	configBytes, _ := os.ReadFile(m.configPath)
 	m.dir = configPath
 

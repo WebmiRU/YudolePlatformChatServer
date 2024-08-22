@@ -119,9 +119,10 @@ func loadModules() {
 				services = append(services, _service)
 			}
 
-			for _, v := range mod.Resources {
-				resources[v.Type] = append(resources[v.Type], "/resource/module/"+dir.Name()+"/"+v.Path)
-			}
+			// @TODO
+			//for _, v := range mod.Resources {
+			//	resources[v.Type] = append(resources[v.Type], "/resource/module/"+dir.Name()+"/"+v.Path)
+			//}
 
 			// Добавляем модуль в список модулей
 			modules[dir.Name()] = &mod

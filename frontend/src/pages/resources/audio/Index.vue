@@ -4,7 +4,7 @@ import store from "../../../store"
 </script>
 
 <script lang="ts">
-import APIService from "../../../services/APIService"
+import APIService from "../../../services/APIService.ts"
 
 export default {
   inject: ['sse'],
@@ -23,7 +23,9 @@ export default {
       {label: 'Аудио', route: {name: 'resources.audio'}},
     ]
 
-    this.model = await APIService.modulesIndexGet()
+    console.log(APIService)
+    this.model = await APIService.resourcesAudioGet()
+    console.log('RAA')
   },
   unmounted() {
 

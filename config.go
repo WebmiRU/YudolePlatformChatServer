@@ -2,6 +2,7 @@ package main
 
 import (
 	"YudoleChatServer/packages/channel"
+	"YudoleChatServer/packages/resource"
 	"encoding/json"
 	"log"
 	"os"
@@ -15,8 +16,8 @@ type Resource struct {
 }
 
 type Resources struct {
-	Audio  map[string]Resource
-	Images map[string]Resource
+	Audio  map[string]resource.Audio
+	Images map[string]resource.Image
 }
 
 type Config struct {
@@ -38,8 +39,8 @@ type Config struct {
 }
 
 func (config *Config) Load() {
-	config.Resources.Audio = make(map[string]Resource)
-	config.Resources.Images = make(map[string]Resource)
+	config.Resources.Audio = make(map[string]resource.Audio)
+	config.Resources.Images = make(map[string]resource.Image)
 
 	configFile, err := os.Open("config.json")
 

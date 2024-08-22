@@ -26,9 +26,66 @@ func response(w http.ResponseWriter, t string, data any) {
 
 	resp, _ := json.Marshal(resp1)
 	defer w.Write(resp)
+	//ress()
 }
 
-func resourcesAudioUpload(w http.ResponseWriter, r *http.Request) {
+func FileGetResourceAudio(path string) (*resource.Audio, error) {
+	file, err := os.Open(path)
+
+	if err != nil {
+		return nil, err
+	}
+
+	s256 := sha256.New()
+	io.Copy(s256, file)
+	sha256String := hex.EncodeToString(s256.Sum(nil))
+
+	stat, _ := file.Stat()
+	buff := make([]byte, 100)
+	file.ReadAt(buff, 0)
+	mimeType := http.DetectContentType(buff)
+
+	result := resource.Audio{
+		Name:     stat.Name(),
+		Size:     stat.Size(),
+		Sha256:   sha256String,
+		MimeType: mimeType,
+	}
+
+	file.Close()
+
+	return &result, nil
+}
+
+func resourcesAudioPayload() map[string]resource.Audio {
+	payload := make(map[string]resource.Audio)
+
+	for _, v := range config.Resources.Audio {
+		payload[v.Sha256] = v
+	}
+
+	for _, module := range modules {
+		for _, v := range module.Resources.Audio {
+			res, err := FileGetResourceAudio(module.Dir + "/resources/" + v)
+
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			payload[res.Sha256] = *res
+		}
+	}
+
+	return payload
+}
+
+func resourcesAudioGet(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("RAG")
+	response(w, "resources/audio", resourcesAudioPayload())
+}
+
+func resourcesAudioPost(w http.ResponseWriter, r *http.Request) {
 	defer response(w, "resources/audio", &config.Resources.Audio)
 
 	httpFile, handler, err := r.FormFile("file")
@@ -76,7 +133,7 @@ func resourcesAudioUpload(w http.ResponseWriter, r *http.Request) {
 
 	file2.Close()
 
-	config.Resources.Audio[sha256String] = Resource{
+	config.Resources.Audio[sha256String] = resource.Audio{
 		Name:     handler.Filename,
 		Sha256:   sha256String,
 		Size:     handler.Size,
@@ -86,24 +143,15 @@ func resourcesAudioUpload(w http.ResponseWriter, r *http.Request) {
 	config.Save()
 }
 
-func resourcesAudio(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	model := resource.ResourceIndex{resources}
-	resp, _ := json.Marshal(model)
-
-	w.Write(resp)
-}
-
 func resourcesIndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	model := resource.ResourceIndex{resources}
-	resp, _ := json.Marshal(model)
-
-	w.Write(resp)
+	// @TODO
+	//model := resource.ResourceIndex{resources}
+	//resp, _ := json.Marshal(model)
+	//
+	//w.Write(resp)
 }
 
 func httpResource(w http.ResponseWriter, r *http.Request) {
@@ -115,11 +163,11 @@ func httpResource(w http.ResponseWriter, r *http.Request) {
 		allow := false
 
 		if _, ok := modules[vars["id"]]; ok {
-			for _, res := range modules[vars["id"]].Resources {
-				if res.Path == vars["path"] {
-					allow = true
-				}
-			}
+			//for _, res := range modules[vars["id"]].Resources {
+			//	if res.Path == vars["path"] {
+			//		allow = true
+			//	}
+			//}
 		}
 
 		if !allow {
@@ -279,8 +327,10 @@ func httpServer() {
 	router.HandleFunc("/api/modules/{id}/autostart/{state:[0,1]}", modulesIdSetAutostartHandler)
 	router.HandleFunc("/api/resources", resourcesIndexHandler)
 	router.HandleFunc("/resource/{type:module|theme}/{id}/{path:.*}", httpResource).Methods("GET")
-	router.HandleFunc("/api/resources/audio/upload", resourcesAudioUpload)
-	router.HandleFunc("/api/resources/audio", resourcesAudio)
+
+	router.HandleFunc("/api/resources/audio", resourcesAudioPost).Methods("POST")
+	router.HandleFunc("/api/resources/audio", resourcesAudioGet).Methods("GET")
+
 	http.Handle("/", router)
 
 	fmt.Println("Server starting...")

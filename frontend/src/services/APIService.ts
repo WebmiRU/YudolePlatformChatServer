@@ -109,6 +109,13 @@ class APIService {
 
         return await response.json();
     }
+
+    async resourcesAudioGet() {
+        const response = await fetch('/api/resources/audio', {
+            method: 'GET',
+        })
+        return await response.json();
+    }
 }
 
 export default new APIService

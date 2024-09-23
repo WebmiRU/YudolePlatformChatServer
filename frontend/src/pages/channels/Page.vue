@@ -100,8 +100,6 @@ export default {
 <template>
   <h1>Настройки канала [{{ $route.params.id }}]</h1>
 
-  {{resources.images}}
-
   <TabView>
     <TabPanel header="Настройки канала">
       <div class="field flex flex-column gap-1 mb-5 mt-3">

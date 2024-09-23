@@ -97,8 +97,8 @@
         "api/modules/update/index"
       ],
       "service_icons": {
-        "goodgame": "",
-        "twitch": ""
+        "goodgame": "095ef097cab141e9c9b0951764ffb1256c01685cb808487a3d8111fc40d99e86",
+        "twitch": "f3edfd4825615a177ef19e4f525098c73d9c8567e66fbefe91ecbc76b63879c4"
       },
       "theme": {
         "name": "system",

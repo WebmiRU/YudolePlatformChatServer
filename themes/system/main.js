@@ -53,8 +53,8 @@ sse.onmessage = function (event) {
             style.innerHTML = '';
             Object.keys(msg.payload.service_icons).forEach(key => {
                 const val = msg.payload.service_icons[key]
-                console.log(".service-icon." + key + " { background-image: url(" + val + ") }")
-                style.innerHTML += ".service-icon." + key + " { background-image: url(" + val + ") }"
+                console.log(".service-icon." + key + " { background-image: url(/api/resources/images/" + val + ") }")
+                style.innerHTML += ".service-icon." + key + " { background-image: url(/api/resources/images/" + val + ") }"
             })
 
             // Показывать/скрывать время

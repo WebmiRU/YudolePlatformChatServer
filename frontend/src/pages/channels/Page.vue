@@ -14,8 +14,8 @@ export default {
       model: null,
       themes: null,
       resources: {
-        audio: {},
-        images: {},
+        audio: [],
+        images: [],
       },
       modules: null,
       // themesList: [],
@@ -36,7 +36,7 @@ export default {
     this.themes = await APIService.apiGet('http://127.0.0.1/api/themes')
     // this.themesList = Object.keys(this.themes.payload)
     this.resources.audio = await APIService.apiGet('http://127.0.0.1/api/resources/audio')
-    this.resources.images = await APIService.apiGet('http://127.0.0.1/api/resources/images')
+    this.resources.images = (await APIService.apiGet('http://127.0.0.1/api/resources/images')).payload
     this.modules = await APIService.apiGet('http://127.0.0.1/api/modules')
 
 
@@ -62,6 +62,16 @@ export default {
 
       return result
     },
+    // images() {
+    //   let result = []
+    //
+    //   this.resources.images.forEach(image => {
+    //     result.push(image.sha256)
+    //   })
+    //
+    //   return result
+    // },
+
     /**
      * Формирует список доступных в данный момент модулей-клиентов,
      * для возможности выбрать иконку из списка доступных,
@@ -90,7 +100,7 @@ export default {
 <template>
   <h1>Настройки канала [{{ $route.params.id }}]</h1>
 
-<!--  {{resources.images.payload}}-->
+  {{resources.images}}
 
   <TabView>
     <TabPanel header="Настройки канала">
@@ -119,19 +129,18 @@ export default {
             <td>{{ v }}</td>
             <td class="w-full">
               <Dropdown
-                v-if="resources.images.payload"
+                v-if="resources.images"
                 v-model="model.payload.service_icons[v]"
-                :options="resources.images.payload"
+                :options="resources.images"
                 option-label=""
-                option-value=""
+                option-value="sha256"
                 placeholder="Выберите тему"
                 class="w-full"
               >
                 <template #value="v">
-                  <img :src="'/api/resources/images/'+v.value.sha256" alt="#" style="max-width: 100px; height: 16px" />
+                  <img :src="'/api/resources/images/'+v.value" alt="#" style="max-width: 100px; height: 16px" />
                 </template>
                 <template #option="v">
-<!--                  {{v.option}}-->
                   <img :src="'/api/resources/images/'+v.option.sha256" alt="#" style="max-width: 200px; max-height: 48px" />
                 </template>
               </Dropdown>

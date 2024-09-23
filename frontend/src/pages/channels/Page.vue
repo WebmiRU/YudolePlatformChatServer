@@ -13,12 +13,19 @@ export default {
     return {
       model: null,
       themes: null,
-      resources: null,
+      resources: {
+        audio: {},
+        images: {},
+      },
       modules: null,
       // themesList: [],
     }
   },
   async mounted() {
+    console.log('MDLS START')
+    console.log('MDLS', await APIService.apiGet('http://127.0.0.1/api/modules'))
+
+
     store.breadcrumbs = [
       {icon: 'pi pi-home', route: {name: 'channels.index'}},
       {label: 'Каналы', route: {name: 'channels.index'}},
@@ -28,8 +35,10 @@ export default {
     this.model = await APIService.channelsGet(this.$route.params.id)
     this.themes = await APIService.apiGet('http://127.0.0.1/api/themes')
     // this.themesList = Object.keys(this.themes.payload)
-    this.resources = await APIService.apiGet('http://127.0.0.1/api/resources')
+    this.resources.audio = await APIService.apiGet('http://127.0.0.1/api/resources/audio')
+    this.resources.images = await APIService.apiGet('http://127.0.0.1/api/resources/images')
     this.modules = await APIService.apiGet('http://127.0.0.1/api/modules')
+
 
     Object.keys(this.themes.payload).forEach(v => {
       if (!this.model.payload.theme.config[v]) {
@@ -81,6 +90,8 @@ export default {
 <template>
   <h1>Настройки канала [{{ $route.params.id }}]</h1>
 
+<!--  {{resources.images.payload}}-->
+
   <TabView>
     <TabPanel header="Настройки канала">
       <div class="field flex flex-column gap-1 mb-5 mt-3">
@@ -97,7 +108,7 @@ export default {
       </div>
       <div class="field flex flex-column gap-1 mb-5 mt-3">
         <label>Иконки сервисов</label>
-        <table>
+        <table border="1" style="border-collapse: collapse">
           <thead>
           <tr>
             <th>Сервис</th>
@@ -108,19 +119,20 @@ export default {
             <td>{{ v }}</td>
             <td class="w-full">
               <Dropdown
-                v-if="resources?.payload"
+                v-if="resources.images.payload"
                 v-model="model.payload.service_icons[v]"
-                :options="resources?.payload?.service_icon"
+                :options="resources.images.payload"
                 option-label=""
                 option-value=""
                 placeholder="Выберите тему"
                 class="w-full"
               >
                 <template #value="v">
-                  <img :src="v.value" alt="#" style="max-width: 100px; height: 16px" />
+                  <img :src="'/api/resources/images/'+v.value.sha256" alt="#" style="max-width: 100px; height: 16px" />
                 </template>
                 <template #option="v">
-                  <img :src="v.option" alt="#" style="max-width: 200px; max-height: 48px" />
+<!--                  {{v.option}}-->
+                  <img :src="'/api/resources/images/'+v.option.sha256" alt="#" style="max-width: 200px; max-height: 48px" />
                 </template>
               </Dropdown>
             </td>

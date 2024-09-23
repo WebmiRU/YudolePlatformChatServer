@@ -15,6 +15,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 )
 
@@ -39,7 +41,7 @@ func responseFile(w http.ResponseWriter, res resource.IResource) {
 	}
 
 	w.Header().Set("Content-Type", res.GetMimeType())
-	w.Header().Set("Content-Length", string(res.GetSize()))
+	w.Header().Set("Content-Length", strconv.FormatInt(res.GetSize(), 10))
 	w.WriteHeader(http.StatusOK)
 
 	io.Copy(w, f)
@@ -129,12 +131,16 @@ func resourcesImagesIndex(w http.ResponseWriter, r *http.Request) {
 
 func resourcesImagesGet(w http.ResponseWriter, r *http.Request) {
 	hash := mux.Vars(r)["sha256"]
-	res := resources.Images[hash]
 
-	if _, ok := resources.Images[hash]; !ok {
+	idx := slices.IndexFunc(resources.Images, func(v resource.Image) bool { return v.Sha256 == hash })
+	//res := resources.Images[hash]
+
+	if idx == -1 {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+
+	res := resources.Images[idx]
 
 	responseFile(w, &res)
 }

@@ -28,7 +28,7 @@ type Config struct {
 
 func (config *Config) Load() {
 	config.Resources.Audio = make(map[string]resource.Audio)
-	config.Resources.Images = make(map[string]resource.Image)
+	//config.Resources.Images = []resource.Image
 
 	configFile, err := os.Open("config.json")
 

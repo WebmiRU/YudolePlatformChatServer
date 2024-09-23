@@ -13,7 +13,7 @@ import (
 
 type Resources struct {
 	Audio  map[string]resource.Audio
-	Images map[string]resource.Image
+	Images []resource.Image
 }
 
 func (r *Resources) Load() {
@@ -22,14 +22,14 @@ func (r *Resources) Load() {
 }
 
 func (r *Resources) LoadImages() {
-	if r.Images == nil {
-		r.Images = make(map[string]resource.Image)
-	}
+	//if r.Images == nil {
+	//	r.Images = make(map[string]resource.Image)
+	//}
 
 	for _, v := range config.Resources.Images {
 		v.Source = "upload"
 		v.Path = cd + ps + "data" + ps + "resources" + ps + "images" + ps + v.Sha256
-		r.Images[v.Sha256] = v
+		r.Images = append(r.Images, v)
 	}
 
 	for _, module := range modules {
@@ -44,7 +44,7 @@ func (r *Resources) LoadImages() {
 
 			res.Source = "module"
 			res.Path = path
-			r.Images[res.Sha256] = *res
+			r.Images = append(r.Images, *res)
 		}
 	}
 }
